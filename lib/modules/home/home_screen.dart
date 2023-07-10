@@ -22,13 +22,16 @@ class HomeScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           body: Padding(
-              padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+              padding: const EdgeInsets.only(left: 15, right: 15),
               child: ConditionalBuilder(
                   condition: AppCubit.get(context).homeModel != null,
                   builder: (context) => SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(
+                              height: 15,
+                            ),
                             Text(
                               "Offers",
                               style: Theme.of(context).textTheme.bodyLarge,
@@ -62,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             ListView.separated(
                               separatorBuilder: (context, index) => SizedBox(
-                                height: 10,
+                                height: 15,
                               ),
                               itemCount: AppCubit.get(context)
                                   .homeModel!
@@ -80,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 15,
                             ),
                           ],
                         ),
@@ -222,9 +225,14 @@ class HomeScreen extends StatelessWidget {
                                   ),
                             ),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                AppCubit.get(context)
+                                    .changeFavourites(model.id!, context);
+                              },
                               icon: Icon(
-                                Icons.favorite,
+                                model.inFavourites!
+                                    ? Icons.favorite_outlined
+                                    : Icons.favorite_border_outlined,
                                 color: Colors.red,
                               ))
                         ],

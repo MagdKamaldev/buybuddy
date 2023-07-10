@@ -67,13 +67,14 @@ class HomeLayout extends StatelessWidget {
                     icon: Icons.home,
                     text: "Home",
                   ),
-                  GButton(
-                    icon: Icons.category,
-                    text: "Categories",
-                  ),
+                 
                   GButton(
                     icon: Icons.favorite,
                     text: "favourites",
+                  ),
+                   GButton(
+                    icon: Icons.shopping_cart,
+                    text: "Cart",
                   ),
                   GButton(
                     icon: Icons.settings,

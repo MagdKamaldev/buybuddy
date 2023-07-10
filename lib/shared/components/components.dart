@@ -171,19 +171,7 @@ void showCustomSnackBar(
   );
 }
 
-Widget bannerElement() => Padding(
-      padding: EdgeInsets.all(20),
-      child: SizedBox(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(13),
-          child: Container(
-            color: Colors.pink,
-            width: 300,
-            height: 250,
-          ),
-        ),
-      ),
-    );
+
 
 void navigateTo(context, widget) => Navigator.push(
     context,
