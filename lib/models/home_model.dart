@@ -27,17 +27,19 @@ class ProductModel {
   dynamic oldPrice;
   String? image;
   String? name;
+  dynamic discount;
   bool? inFavourites;
   bool? inCart;
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
+    discount = json["discount"];
     price = json["price"];
-    oldPrice = json["oldPrice"];
+    oldPrice = json["old_price"];
     image = json["image"];
     name = json["name"];
-    inFavourites = json["inFavourites"];
-    inCart = json["inCart"];
+    inFavourites = json["in_favourites"];
+    inCart = json["in_cart"];
   }
 }
 

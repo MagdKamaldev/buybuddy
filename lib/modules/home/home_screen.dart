@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           body: Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
               child: ConditionalBuilder(
                   condition: AppCubit.get(context).homeModel != null,
                   builder: (context) => SingleChildScrollView(
@@ -54,17 +54,34 @@ class HomeScreen extends StatelessWidget {
                               height: 10,
                             ),
                             Text(
-                              "Products",
+                              "What's New ?",
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            products(
-                                products: AppCubit.get(context)
+                            ListView.separated(
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: 10,
+                              ),
+                              itemCount: AppCubit.get(context)
+                                  .homeModel!
+                                  .data!
+                                  .products
+                                  .length,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) => product(
+                                AppCubit.get(context)
                                     .homeModel!
                                     .data!
-                                    .products),
+                                    .products[index],
+                                context,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
                           ],
                         ),
                       ),
@@ -130,32 +147,94 @@ class HomeScreen extends StatelessWidget {
         ],
       );
 
-  Widget products({
-    required List<ProductModel> products,
-  }) =>
-      GridView.count(
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        crossAxisCount: 2,
-        children: List.generate(
-          products.length,
-          (index) => Column(
-            children: [
-              product(products[index]),
-            ],
+  Widget product(ProductModel model, context) => Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: prussianBlue, width: 1),
+            borderRadius: BorderRadius.circular(13)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            color: indigoDye,
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(13),
+                      bottomLeft: Radius.circular(13)),
+                  child: Image.network(
+                    model.image.toString(),
+                    fit: BoxFit.cover,
+                    width: 120,
+                    height: 120,
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.55,
+                      child: Text(
+                        model.name.toString(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(color: ivory),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.55,
+                      height: 1,
+                      color: ivory,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.55,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            "EGP  ${model.price.toString()}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall!
+                                .copyWith(color: ivory),
+                          ),
+                          if (model.discount != 0)
+                            Text(
+                              model.oldPrice.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall!
+                                  .copyWith(
+                                    fontSize: 12,
+                                    color: ivory,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationThickness: 3,
+                                    decorationColor: Colors.red[400],
+                                  ),
+                            ),
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              ))
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
-      );
-
-  Widget product(model) => Column(
-        children: [
-          Image.network(
-            model.image,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-        ],
       );
 }

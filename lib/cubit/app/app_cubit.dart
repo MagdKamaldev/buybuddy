@@ -12,7 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app_states.dart';
 
 class AppCubit extends Cubit<AppStates> {
-  AppCubit() : super(AppInitialState());
+  AppCubit() : super(AppInitialState()) {
+    getHomeData();
+  }
   static AppCubit get(context) => BlocProvider.of(context);
 
   int? screenindex = 0;
