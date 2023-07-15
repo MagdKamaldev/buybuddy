@@ -2,6 +2,8 @@
 import 'package:buybuddy/cubit/app/app_cubit.dart';
 import 'package:buybuddy/cubit/app/app_states.dart';
 import 'package:buybuddy/models/home_model.dart';
+import 'package:buybuddy/modules/home/product_details.dart';
+import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -80,6 +82,7 @@ class HomeScreen extends StatelessWidget {
                                     .data!
                                     .products[index],
                                 context,
+                                index,
                               ),
                             ),
                             SizedBox(
@@ -150,97 +153,105 @@ class HomeScreen extends StatelessWidget {
         ],
       );
 
-  Widget product(ProductModel model, context) => Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: prussianBlue, width: 1),
-            borderRadius: BorderRadius.circular(13)),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            color: indigoDye,
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(13),
-                      bottomLeft: Radius.circular(13)),
-                  child: Image.network(
-                    model.image.toString(),
-                    fit: BoxFit.cover,
-                    width: 120,
-                    height: 120,
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.55,
-                      child: Text(
-                        model.name.toString(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleSmall!
-                            .copyWith(color: ivory),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+  Widget product(ProductModel model, context, index) => GestureDetector(
+        onTap: () {
+          navigateTo(context, ProductDetails(index: index));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: prussianBlue, width: 1),
+              borderRadius: BorderRadius.circular(13)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              color: indigoDye,
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(13),
+                        bottomLeft: Radius.circular(13)),
+                    child: Hero(
+                      tag: "product_$index",
+                      child: Image.network(
+                        model.image.toString(),
+                        fit: BoxFit.cover,
+                        width: 120,
+                        height: 120,
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.55,
-                      height: 1,
-                      color: ivory,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.55,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            "EGP  ${model.price.toString()}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall!
-                                .copyWith(color: ivory),
-                          ),
-                          if (model.discount != 0)
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.55,
+                        child: Text(
+                          model.name.toString(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(color: ivory),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.55,
+                        height: 1,
+                        color: ivory,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.55,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
                             Text(
-                              model.oldPrice.toString(),
+                              "EGP  ${model.price.toString()}",
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall!
-                                  .copyWith(
-                                    fontSize: 12,
-                                    color: ivory,
-                                    decoration: TextDecoration.lineThrough,
-                                    decorationThickness: 3,
-                                    decorationColor: Colors.red[400],
-                                  ),
+                                  .copyWith(color: ivory),
                             ),
-                          IconButton(
-                              onPressed: () {
-                                AppCubit.get(context)
-                                    .changeFavourites(model.id!, context);
-                              },
-                              icon: Icon(
-                                model.inFavourites!
-                                    ? Icons.favorite_outlined
-                                    : Icons.favorite_border_outlined,
-                                color: Colors.red,
-                              ))
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              ],
+                            if (model.discount != 0)
+                              Text(
+                                model.oldPrice.toString(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      fontSize: 12,
+                                      color: ivory,
+                                      decoration: TextDecoration.lineThrough,
+                                      decorationThickness: 3,
+                                      decorationColor: Colors.red[400],
+                                    ),
+                              ),
+                            IconButton(
+                                onPressed: () {
+                                  AppCubit.get(context)
+                                      .changeFavourites(model.id!, context);
+                                },
+                                icon: Icon(
+                                  model.inFavourites!
+                                      ? Icons.favorite_outlined
+                                      : Icons.favorite_border_outlined,
+                                  color: Colors.red,
+                                ))
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

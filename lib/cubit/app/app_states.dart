@@ -22,4 +22,18 @@ class GetFavoritesSuccessState extends AppStates{}
 
 class GetFavoritesErrorState extends AppStates{}
 
+class AddToCartLoadingState extends AppStates{}
+
+class AddToCartSuccessState extends AppStates{}
+
+class GetCartDataLoadingState extends AppStates{}
+
+class GetCartDataSuccessState extends AppStates{}
+
+class GetCartDataErrorState extends AppStates{}
+
+class AddToCartErrorState extends AppStates{}
+
 class ChangeSliderIndex extends AppStates{}
+
+class ChangeCartButton extends AppStates{}
