@@ -8,7 +8,6 @@ import '../../cubit/app/app_states.dart';
 import '../../shared/components/components.dart';
 import '../../shared/styles/colors.dart';
 
-
 class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -66,7 +65,7 @@ class CartScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 1,
+                  height: 5,
                 ),
                 Container(
                   width: double.infinity,

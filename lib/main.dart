@@ -12,7 +12,7 @@ import 'cubit/app/app_states.dart';
 import 'cubit/login/login_cubit.dart';
 import 'cubit/signup/sign_up_cubit.dart';
 
-String token = "";
+String ? token = "";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

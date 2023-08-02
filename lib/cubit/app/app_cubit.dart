@@ -6,19 +6,22 @@ import 'package:buybuddy/models/home_model.dart';
 import 'package:buybuddy/modules/home/cart_screen.dart';
 import 'package:buybuddy/modules/home/favourites_screen.dart';
 import 'package:buybuddy/modules/home/home_screen.dart';
-import 'package:buybuddy/modules/home/settings_screen.dart';
+import 'package:buybuddy/modules/home/profile_screen.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/networks/dio_helper.dart';
 import 'package:buybuddy/shared/networks/end_points.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/cart_model.dart';
+import '../../models/login_model.dart';
 import 'app_states.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState()) {
     getHomeData();
     getFavouritesData();
+    getCartData();
+    getUserData();
   }
 
   static AppCubit get(context) => BlocProvider.of(context);
@@ -29,7 +32,7 @@ class AppCubit extends Cubit<AppStates> {
     HomeScreen(),
     FavouritesScreen(),
     CartScreen(),
-    SettingsScreen(),
+    ProfileScreen(),
   ];
 
   void changeScreen(int index) {
@@ -42,6 +45,9 @@ class AppCubit extends Cubit<AppStates> {
     }
     if (index == 2) {
       getCartData();
+    }
+    if (index == 3) {
+      getUserData();
     }
     emit(ChangeScreenState());
   }
@@ -139,7 +145,13 @@ class AppCubit extends Cubit<AppStates> {
       data: {"product_id": productId},
       authorization: token,
     ).then((value) {
-      showCustomSnackBar(context, "Added Successfully", Colors.green);
+      showCustomSnackBar(
+          context,
+          value.data["message"],
+          value.data["message"] == "Deleted Successfully"
+              ? Colors.red
+              : Colors.green);
+
       changeCart = CartData.fromJson(value.data);
       if (!changeCart!.status) {
         cartItems[productId] = !cartItems[productId]!;
@@ -162,8 +174,40 @@ class AppCubit extends Cubit<AppStates> {
       getCartModel = GetCartModel.fromJson(value.data);
       emit(GetCartDataSuccessState());
     }).catchError((error) {
-      //print(error.toString());
       emit(GetCartDataErrorState());
+    });
+  }
+
+  LoginModel? userModel;
+
+  void getUserData() {
+    emit(GetUserDataLoadingState());
+    DioHelper.getData(url: profile, authorization: token).then((value) {
+      userModel = LoginModel.fromJson(value.data);
+
+      emit(GetUserDataSuccessState(userModel!));
+    }).catchError((error) {
+      emit(GetUserDataErrorState());
+    });
+  }
+
+  void updateUserData({
+    required String name,
+    required String phone,
+    required String email,
+  }) {
+    emit(UpdateUserDataLoadingState());
+    DioHelper.updateData(url: updateProfile, authorization: token, data: {
+      "name": name,
+      "email": email,
+      "phone": phone,
+    }).then((value) {
+      userModel = LoginModel.fromJson(value.data);
+      //print(userModel!.data!.name);
+      emit(UpdateUserDataSuccessState(userModel!));
+    }).catchError((error) {
+      //  print(error.toString());
+      emit(UpdateUserDataErrorState());
     });
   }
 }

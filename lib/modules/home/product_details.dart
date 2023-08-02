@@ -8,16 +8,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/app/app_cubit.dart';
 
-class ProductDetails extends StatelessWidget {
+class ProductDetails extends StatefulWidget {
   final int index;
   const ProductDetails({required this.index});
 
   @override
+  State<ProductDetails> createState() => _ProductDetailsState();
+}
+
+class _ProductDetailsState extends State<ProductDetails> {
+  @override
   Widget build(BuildContext context) {
-    
     ProductModel product =
-        AppCubit.get(context).homeModel!.data!.products[index];
-        
+        AppCubit.get(context).homeModel!.data!.products[widget.index];
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) => Scaffold(
@@ -36,7 +39,7 @@ class ProductDetails extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Hero(
-                    tag: "product_$index",
+                    tag: "product_${widget.index}",
                     child: Image.network(product.image.toString())),
               ),
               Container(
@@ -149,13 +152,12 @@ class ProductDetails extends StatelessWidget {
                   fallback: (context) =>
                       Center(child: CircularProgressIndicator()),
                   condition: state is! AddToCartLoadingState,
-                  builder: (context) =>  defaultButton(
-                          function: () {
-                            AppCubit.get(context)
-                                .addToCart(product.id!, context);
-                          },
-                          context: context,
-                          text: "Add To Cart"),
+                  builder: (context) => defaultButton(
+                      function: () {
+                        AppCubit.get(context).addToCart(product.id!, context);
+                      },
+                      context: context,
+                      text: "Add / Remove from Cart"),
                 ),
               ),
               Container(

@@ -155,7 +155,11 @@ class HomeScreen extends StatelessWidget {
 
   Widget product(ProductModel model, context, index) => GestureDetector(
         onTap: () {
-          navigateTo(context, ProductDetails(index: index));
+          navigateTo(
+              context,
+              ProductDetails(
+                index: index,
+              ));
         },
         child: Container(
           decoration: BoxDecoration(

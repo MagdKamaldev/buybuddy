@@ -20,7 +20,7 @@ class HomeLayout extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Good ${AppCubit.get(context).welcomeText} UserName !",
+                  "Good ${AppCubit.get(context).welcomeText} !",
                   style: Theme.of(context)
                       .textTheme
                       .bodyLarge!
@@ -67,18 +67,17 @@ class HomeLayout extends StatelessWidget {
                     icon: Icons.home,
                     text: "Home",
                   ),
-                 
                   GButton(
                     icon: Icons.favorite,
                     text: "favourites",
                   ),
-                   GButton(
+                  GButton(
                     icon: Icons.shopping_cart,
                     text: "Cart",
                   ),
                   GButton(
-                    icon: Icons.settings,
-                    text: "settings",
+                    icon: Icons.person,
+                    text: "Profile",
                   ),
                 ],
                 gap: 8,

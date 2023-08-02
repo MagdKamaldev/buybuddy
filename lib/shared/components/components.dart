@@ -171,8 +171,6 @@ void showCustomSnackBar(
   );
 }
 
-
-
 void navigateTo(context, widget) => Navigator.push(
     context,
     CupertinoPageRoute(
@@ -193,4 +191,5 @@ Widget logoutButton(context) => defaultButton(
       });
     },
     context: context,
-    text: "Sign out");
+    text: "Sign Out",
+    isUpperCase: true);
