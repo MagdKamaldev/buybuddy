@@ -85,6 +85,23 @@ class CartScreen extends StatelessWidget {
                             .copyWith(fontSize: 25, color: indigoDye)),
                   ),
                 ),
+                if (AppCubit.get(context)
+                    .getCartModel!
+                    .data!
+                    .cartItems!
+                    .isNotEmpty)
+                  SizedBox(
+                    height: 20,
+                  ),
+                if (AppCubit.get(context)
+                    .getCartModel!
+                    .data!
+                    .cartItems!
+                    .isNotEmpty)
+                  defaultButton(
+                      function: () {},
+                      context: context,
+                      text: "Proceed to payment"),
                 SizedBox(
                   height: 25,
                 ),

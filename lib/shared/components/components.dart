@@ -45,55 +45,6 @@ Widget defaultTextButton({
           style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
         ));
 
-// Widget defaultFormField({
-//   required TextEditingController controller,
-//   required TextInputType type,
-//   required Function onSubmit,
-//   required Function validate,
-//   bool isPassword = false,
-//   required String label,
-//   required IconData prefix,
-//   IconData? suffix,
-//   Function? suffixPressed,
-//   bool isClickable = true,
-//   BuildContext? context,
-// }) =>
-//     TextFormField(
-//       validator: (value) {
-//         return validate(value);
-//       },
-//       controller: controller,
-//       keyboardType: type,
-//       enabled: isClickable,
-//       obscureText: isPassword,
-//       onFieldSubmitted: (s) {
-//         onSubmit();
-//       },
-//       style: TextStyle(
-//         fontSize: 16,
-//         fontWeight: FontWeight.normal,
-//       ),
-//       decoration: InputDecoration(
-//         labelText: label,
-//         labelStyle:
-//             Theme.of(context!).textTheme.titleMedium!.copyWith(fontSize: 16),
-//         prefixIcon: Icon(
-//           prefix,
-//           color: prussianBlue,
-//         ),
-//         suffixIcon: suffix != null
-//             ? IconButton(
-//                 icon: Icon(
-//                   suffix,
-//                 ),
-//                 onPressed: () {
-//                   suffixPressed!();
-//                 },
-//               )
-//             : null,
-//         border: OutlineInputBorder(),
-//       ),
-//     );
 
 Widget defaultFormField({
   required TextEditingController controller,
