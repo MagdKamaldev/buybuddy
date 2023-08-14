@@ -5,6 +5,7 @@ import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CheckOutScreen extends StatelessWidget {
   const CheckOutScreen({super.key});
@@ -113,18 +114,60 @@ class CheckOutScreen extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.2,
                 ),
                 Text(
-                  "Set Location",
+                  "Set Delivery Location",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                defaultButton(
-                    function: () {
-                      navigateTo(context, MapScreen());
-                    },
-                    context: context,
-                    text: "Set Location on Map"),
+                GestureDetector(
+                  onTap: () {
+                    navigateTo(context, const MapScreen());
+                  },
+                  child: Container(
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: const GoogleMap(
+                            scrollGesturesEnabled: false,
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(29.9590181,
+                                  30.9398061), // San Francisco coordinates
+                              zoom: 12,
+                            ),
+                            mapType: MapType.normal,
+                            zoomControlsEnabled: false,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: Colors.white.withOpacity(0.9)),
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Choose Location',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall!
+                                        .copyWith(fontSize: 15)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

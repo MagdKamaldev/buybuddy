@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -27,6 +28,14 @@ class MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 80,
+        title: Text(
+          "Choose Location",
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ivory),
+        ),
+        centerTitle: true,
+      ),
       body: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: _kGooglePlex,
