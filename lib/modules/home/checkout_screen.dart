@@ -1,12 +1,13 @@
 import 'package:buybuddy/cubit/app/app_cubit.dart';
 import 'package:buybuddy/cubit/app/app_states.dart';
+import 'package:buybuddy/modules/home/map_screen.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PaymnetScreen extends StatelessWidget {
-  const PaymnetScreen({super.key});
+class CheckOutScreen extends StatelessWidget {
+  const CheckOutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class PaymnetScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Pay with :",
+                  "Payment",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(
@@ -71,7 +72,7 @@ class PaymnetScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 SizedBox(
                   height: 70,
@@ -102,12 +103,28 @@ class PaymnetScreen extends StatelessWidget {
                           const SizedBox(
                             width: 10,
                           ),
-                          const Icon(Icons.monetization_on)
+                          const Icon(Icons.monetization_on),
                         ],
                       ),
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                ),
+                Text(
+                  "Set Location",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                defaultButton(
+                    function: () {
+                      navigateTo(context, MapScreen());
+                    },
+                    context: context,
+                    text: "Set Location on Map"),
               ],
             ),
           ),

@@ -164,7 +164,7 @@ void showCardSheet({required BuildContext context}) => showModalBottomSheet(
               ),
               const SizedBox(height: 40),
               defaultButton(
-                  function: () {}, context: context, text: "Submit Payment"),
+                  function: () {}, context: context, text: "Add Card"),
             ],
           ),
         ),
