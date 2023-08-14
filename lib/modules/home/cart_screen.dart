@@ -1,4 +1,5 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+import 'package:buybuddy/modules/home/payment_screen.dart';
 import 'package:buybuddy/modules/home/product_details.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -99,9 +100,11 @@ class CartScreen extends StatelessWidget {
                     .cartItems!
                     .isNotEmpty)
                   defaultButton(
-                      function: () {},
+                      function: () {
+                        navigateTo(context, PaymnetScreen());
+                      },
                       context: context,
-                      text: "Proceed to payment"),
+                      text: "Proceed to Checkout"),
                 SizedBox(
                   height: 25,
                 ),
