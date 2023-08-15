@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:buybuddy/cubit/map/map_cubit.dart';
 import 'package:buybuddy/modules/home/home_layout.dart';
 import 'package:buybuddy/modules/onboarding/on_borading.dart';
 import 'package:buybuddy/modules/onboarding/sign_in.dart';
@@ -50,6 +51,9 @@ class MyApp extends StatelessWidget {
         }),
         BlocProvider(create: (context) {
           return LoginCubit();
+        }),
+         BlocProvider(create: (context) {
+          return MapCubit();
         })
       ],
       child: BlocConsumer<AppCubit, AppStates>(

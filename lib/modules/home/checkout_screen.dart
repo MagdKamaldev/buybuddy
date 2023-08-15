@@ -149,7 +149,7 @@ class CheckOutScreen extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
-                                color: Colors.white.withOpacity(0.9)),
+                                color: ivory.withOpacity(0.8)),
                             width: double.infinity,
                             padding: const EdgeInsets.all(16),
                             child: Row(

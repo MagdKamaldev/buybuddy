@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'package:buybuddy/cubit/map/map_cubit.dart';
+import 'package:buybuddy/cubit/map/map_states.dart';
+import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
@@ -19,40 +23,47 @@ class MapScreenState extends State<MapScreen> {
     zoom: 14.4746,
   );
 
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80,
-        title: Text(
-          "Choose Location",
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: ivory),
-        ),
-        centerTitle: true,
-      ),
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: const Text('To the lake!'),
-        icon: const Icon(Icons.directions_boat),
-      ),
+    return BlocConsumer<MapCubit, MapStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 80,
+            title: Text(
+              "Choose Location",
+              style:
+                  Theme.of(context).textTheme.bodyLarge!.copyWith(color: ivory),
+            ),
+            centerTitle: true,
+          ),
+          body: GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: _kGooglePlex,
+            zoomControlsEnabled: false,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+          ),
+          floatingActionButton: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                defaultButton(
+                    width: MediaQuery.of(context).size.width * 0.46,
+                    function: () {
+                      MapCubit.get(context).getLatLong();
+                     
+                    },
+                    context: context,
+                    text: "get current location"),
+              ],
+            ),
+          ),
+        );
+      },
     );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }
