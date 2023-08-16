@@ -123,49 +123,55 @@ void showCustomSnackBar(
 
 void showCardSheet({required BuildContext context}) => showModalBottomSheet(
       context: context,
-      builder: (context) => Container(
-        color: ivory,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Enter Credit Card Details',
-                  style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(height: 20),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Card Number',
-                  labelStyle: Theme.of(context).textTheme.titleMedium,
+      builder: (context) => ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+        child: Container(
+          color: ivory,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Enter Credit Card Details',
+                    style: Theme.of(context).textTheme.bodyLarge),
+                const SizedBox(height: 20),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Card Number',
+                    labelStyle: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Expiration Date',
-                        labelStyle: Theme.of(context).textTheme.titleMedium,
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Expiration Date',
+                          labelStyle: Theme.of(context).textTheme.titleMedium,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'CVV',
-                        labelStyle: Theme.of(context).textTheme.titleMedium,
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: 'CVV',
+                          labelStyle: Theme.of(context).textTheme.titleMedium,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 40),
-              defaultButton(
-                  function: () {}, context: context, text: "Add Card"),
-            ],
+                  ],
+                ),
+                const SizedBox(height: 40),
+                defaultButton(
+                    function: () {}, context: context, text: "Add Card"),
+              ],
+            ),
           ),
         ),
       ),

@@ -15,7 +15,7 @@ class CheckOutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<CheckOutCubit, CheckOutStates>(
       listener: (context, state) {
-        if (CheckOutCubit.get(context).servicesEnabled==true) {
+        if (state is ResquestPermissionSuccessState) {
           CheckOutCubit.get(context).getLatLong();
         }
       },
