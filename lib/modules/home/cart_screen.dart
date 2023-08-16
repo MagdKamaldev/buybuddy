@@ -119,107 +119,98 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget product(model, context, index) => GestureDetector(
-        onTap: () {
-          navigateTo(
-              context,
-              ProductDetails(
-                index: index,
-              ));
-        },
-        child: Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: prussianBlue, width: 1),
-              borderRadius: BorderRadius.circular(13)),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Container(
-              color: indigoDye,
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(13),
-                        bottomLeft: Radius.circular(13)),
-                    child: Hero(
-                      tag: "product_$index",
-                      child: Image.network(
-                        model.image.toString(),
-                        fit: BoxFit.cover,
-                        width: 120,
-                        height: 120,
-                      ),
+  Widget product(model, context, index) => Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: prussianBlue, width: 1),
+            borderRadius: BorderRadius.circular(13)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            color: indigoDye,
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(13),
+                      bottomLeft: Radius.circular(13)),
+                  child: Hero(
+                    tag: "product_$index",
+                    child: Image.network(
+                      model.image.toString(),
+                      fit: BoxFit.cover,
+                      width: 120,
+                      height: 120,
                     ),
                   ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.55,
-                        child: Text(
-                          model.name.toString(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall!
-                              .copyWith(color: ivory),
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.55,
+                      child: Text(
+                        model.name.toString(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(color: ivory),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.55,
-                        height: 1,
-                        color: ivory,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.55,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.55,
+                      height: 1,
+                      color: ivory,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.55,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            "EGP  ${model.price.toString()}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall!
+                                .copyWith(color: ivory),
+                          ),
+                          if (model.discount != 0)
                             Text(
-                              "EGP  ${model.price.toString()}",
+                              model.oldPrice.toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall!
-                                  .copyWith(color: ivory),
+                                  .copyWith(
+                                    fontSize: 12,
+                                    color: ivory,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationThickness: 3,
+                                    decorationColor: Colors.red[400],
+                                  ),
                             ),
-                            if (model.discount != 0)
-                              Text(
-                                model.oldPrice.toString(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall!
-                                    .copyWith(
-                                      fontSize: 12,
-                                      color: ivory,
-                                      decoration: TextDecoration.lineThrough,
-                                      decorationThickness: 3,
-                                      decorationColor: Colors.red[400],
-                                    ),
-                              ),
-                            IconButton(
-                                onPressed: () {
-                                  FavoritesCubit.get(context)
-                                      .changeFavourites(model.id!, context);
-                                },
-                                icon: Icon(
-                                  Icons.favorite_border_outlined,
-                                  color: Colors.red,
-                                ))
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
+                          IconButton(
+                              onPressed: () {
+                                FavoritesCubit.get(context)
+                                    .changeFavourites(model.id!, context);
+                              },
+                              icon: Icon(
+                                Icons.favorite_border_outlined,
+                                color: Colors.red,
+                              ))
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              ],
             ),
           ),
         ),

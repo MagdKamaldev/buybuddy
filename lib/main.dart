@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
           return SignUpCubit();
         }),
         BlocProvider(create: (context) {
-          return CheckOutCubit();
+          return CheckOutCubit()..requestPermission();
         }),
       ],
       child: BlocConsumer<AppCubit, AppStates>(
