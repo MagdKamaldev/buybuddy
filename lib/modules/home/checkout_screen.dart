@@ -137,7 +137,7 @@ class CheckOutScreen extends StatelessWidget {
                             function: () async {
                               CheckOutCubit.get(context).requestPermission();
                             },
-                            text: "Request Permission",
+                            text: "Request Permission and set location",
                             context: context,
                           ),
                         ]),
@@ -191,7 +191,7 @@ class CheckOutScreen extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text('Choose Location',
+                                      Text('Choose Another Location',
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleSmall!

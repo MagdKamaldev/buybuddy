@@ -22,7 +22,7 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
     permission = await Geolocator.requestPermission().then((value) {
       emit(ResquestPermissionSuccessState());
 
-      if (servicesEnabled == true && permission != LocationPermission.denied) {
+      if (permission != LocationPermission.denied) {
         getLatLong();
       }
     }).catchError((error) {
