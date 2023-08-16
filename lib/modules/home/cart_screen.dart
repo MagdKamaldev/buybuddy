@@ -1,4 +1,5 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+import 'package:buybuddy/cubit/favourites/favourites_cubit.dart';
 import 'package:buybuddy/modules/home/checkout_screen.dart';
 import 'package:buybuddy/modules/home/product_details.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -102,6 +103,7 @@ class CartScreen extends StatelessWidget {
                   defaultButton(
                       function: () {
                         navigateTo(context, CheckOutScreen());
+                        
                       },
                       context: context,
                       text: "Proceed to Checkout"),
@@ -205,7 +207,7 @@ class CartScreen extends StatelessWidget {
                               ),
                             IconButton(
                                 onPressed: () {
-                                  AppCubit.get(context)
+                                  FavoritesCubit.get(context)
                                       .changeFavourites(model.id!, context);
                                 },
                                 icon: Icon(

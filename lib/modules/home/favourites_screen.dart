@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:buybuddy/cubit/app/app_cubit.dart';
-import 'package:buybuddy/cubit/app/app_states.dart';
+import 'package:buybuddy/cubit/favourites/favourites_cubit.dart';
+import 'package:buybuddy/cubit/favourites/favourites_states.dart';
 import 'package:buybuddy/modules/home/product_details.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -13,7 +13,7 @@ class FavouritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
+    return BlocConsumer<FavoritesCubit, FavoritesStates>(
       listener: (context, state) {},
       builder: (context, state) => Scaffold(
         body: ConditionalBuilder(
@@ -28,12 +28,15 @@ class FavouritesScreen extends StatelessWidget {
                   separatorBuilder: (context, index) => SizedBox(
                     height: 15,
                   ),
-                  itemCount:
-                      AppCubit.get(context).favoritesModel!.data!.data.length,
+                  itemCount: FavoritesCubit.get(context)
+                      .favoritesModel!
+                      .data!
+                      .data
+                      .length,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) => product(
-                    AppCubit.get(context)
+                    FavoritesCubit.get(context)
                         .favoritesModel!
                         .data!
                         .data[index]
@@ -56,7 +59,7 @@ class FavouritesScreen extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                        'Total Items : ${AppCubit.get(context).favoritesModel!.data!.total.toString()}',
+                        'Total Items : ${FavoritesCubit.get(context).favoritesModel!.data!.total.toString()}',
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge!
@@ -70,7 +73,7 @@ class FavouritesScreen extends StatelessWidget {
             ),
           ),
           fallback: (context) => Center(child: CircularProgressIndicator()),
-          condition: AppCubit.get(context).favoritesModel != null,
+          condition: FavoritesCubit.get(context).favoritesModel != null,
         ),
       ),
     );
@@ -163,7 +166,7 @@ class FavouritesScreen extends StatelessWidget {
                               ),
                             IconButton(
                                 onPressed: () {
-                                  AppCubit.get(context)
+                                  FavoritesCubit.get(context)
                                       .changeFavourites(model.id!, context);
                                 },
                                 icon: Icon(

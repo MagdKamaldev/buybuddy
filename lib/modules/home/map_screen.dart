@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:buybuddy/cubit/map/map_cubit.dart';
-import 'package:buybuddy/cubit/map/map_states.dart';
+import 'package:buybuddy/cubit/map/checkout_cubit.dart';
+import 'package:buybuddy/cubit/map/checkout_states.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MapCubit, MapStates>(
+    return BlocConsumer<CheckOutCubit,CheckOutStates>(
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
@@ -52,13 +52,13 @@ class MapScreenState extends State<MapScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 defaultButton(
-                    width: MediaQuery.of(context).size.width * 0.46,
-                    function: () {
-                      MapCubit.get(context).getLatLong();
-                     
-                    },
-                    context: context,
-                    text: "get current location"),
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  function: () {
+                    CheckOutCubit.get(context).getCountry();
+                  },
+                  context: context,
+                  text: "current location",
+                ),
               ],
             ),
           ),

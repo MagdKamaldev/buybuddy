@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:buybuddy/cubit/map/map_cubit.dart';
+import 'package:buybuddy/cubit/map/checkout_cubit.dart';
 import 'package:buybuddy/modules/home/home_layout.dart';
 import 'package:buybuddy/modules/onboarding/on_borading.dart';
 import 'package:buybuddy/modules/onboarding/sign_in.dart';
@@ -10,10 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'cubit/app/app_cubit.dart';
 import 'cubit/app/app_states.dart';
+import 'cubit/favourites/favourites_cubit.dart';
 import 'cubit/login/login_cubit.dart';
 import 'cubit/signup/sign_up_cubit.dart';
 
-String ? token = "";
+String? token = "";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,13 +48,18 @@ class MyApp extends StatelessWidget {
           return AppCubit()..selectWelcomeTime();
         }),
         BlocProvider(create: (context) {
+          return FavoritesCubit()..getFavouritesData();
+        }),
+        BlocProvider(create: (context) {
           return SignUpCubit();
         }),
         BlocProvider(create: (context) {
           return LoginCubit();
         }),
-         BlocProvider(create: (context) {
-          return MapCubit();
+        BlocProvider(create: (context) {
+          return CheckOutCubit()
+            ..requestPermission()
+            ..getLatLong();
         })
       ],
       child: BlocConsumer<AppCubit, AppStates>(

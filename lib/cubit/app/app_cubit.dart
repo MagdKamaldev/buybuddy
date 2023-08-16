@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, avoid_function_literals_in_foreach_calls
 import 'package:buybuddy/main.dart';
-import 'package:buybuddy/models/favourites_model.dart';
 import 'package:buybuddy/models/get_cart_model.dart';
 import 'package:buybuddy/models/home_model.dart';
 import 'package:buybuddy/modules/home/cart_screen.dart';
@@ -14,12 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/cart_model.dart';
 import '../../models/login_model.dart';
+import '../favourites/favourites_cubit.dart';
 import 'app_states.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState()) {
     getHomeData();
-    getFavouritesData();
     getCartData();
     getUserData();
   }
@@ -37,18 +36,6 @@ class AppCubit extends Cubit<AppStates> {
 
   void changeScreen(int index) {
     screenindex = index;
-    if (index == 0) {
-      getHomeData();
-    }
-    if (index == 1) {
-      getFavouritesData();
-    }
-    if (index == 2) {
-      getCartData();
-    }
-    if (index == 3) {
-      getUserData();
-    }
     emit(ChangeScreenState());
   }
 
@@ -67,7 +54,6 @@ class AppCubit extends Cubit<AppStates> {
 
   HomeModel? homeModel;
 
-  Map<int, bool> favourites = {};
 
   void getHomeData() {
     emit(GetHomeDataLoadingState());
@@ -90,42 +76,8 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  ChangeFavouritesmodel? changeFavouritesmodel;
-
-  void changeFavourites(int productId, context) {
-    favourites[productId] = !favourites[productId]!;
-    emit(ChangeFavoritesLoadingState());
-    DioHelper.postData(
-      url: favorites,
-      data: {"product_id": productId},
-      authorization: token,
-    ).then((value) {
-      changeFavouritesmodel = ChangeFavouritesmodel.fromJson(value.data);
-      if (!changeFavouritesmodel!.status!) {
-        favourites[productId] = !favourites[productId]!;
-      } else {
-        getFavouritesData();
-      }
-
-      emit(ChangeFavoritesSuccessState());
-    }).catchError((error) {
-      favourites[productId] = !favourites[productId]!;
-      emit(ChangeFavoritesErrorState());
-    });
-  }
-
-  FavoritesModel? favoritesModel;
-
-  void getFavouritesData() {
-    emit(GetFavoritesLoadingState());
-    DioHelper.getData(url: favorites, authorization: token).then((value) {
-      favoritesModel = FavoritesModel.fromJson(value.data);
-      emit(GetFavoritesSuccessState());
-    }).catchError((error) {
-      emit(GetFavoritesErrorState());
-    });
-  }
-
+  
+  
   double currentCarouselPage = 0;
 
   void changeSliderIndex(int index) {

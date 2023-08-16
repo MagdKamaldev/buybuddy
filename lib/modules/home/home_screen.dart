@@ -11,6 +11,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubit/favourites/favourites_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -240,7 +241,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                             IconButton(
                                 onPressed: () {
-                                  AppCubit.get(context)
+                                  FavoritesCubit.get(context)
                                       .changeFavourites(model.id!, context);
                                 },
                                 icon: Icon(
