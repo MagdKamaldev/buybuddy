@@ -20,18 +20,6 @@ class GetHomeDataErrorState extends AppStates{}
 
 
 
-class AddToCartLoadingState extends AppStates{}
-
-class AddToCartSuccessState extends AppStates{}
-
-class GetCartDataLoadingState extends AppStates{}
-
-class GetCartDataSuccessState extends AppStates{}
-
-class GetCartDataErrorState extends AppStates{}
-
-class AddToCartErrorState extends AppStates{}
-
 class ChangeSliderIndex extends AppStates{}
 
 class GetUserDataLoadingState extends AppStates{}

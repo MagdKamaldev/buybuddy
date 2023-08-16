@@ -5,15 +5,15 @@ import 'package:buybuddy/modules/home/product_details.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../cubit/app/app_cubit.dart';
-import '../../cubit/app/app_states.dart';
+import '../../cubit/cart/cart_cubit.dart';
+import '../../cubit/cart/cart_states.dart';
 import '../../shared/components/components.dart';
 import '../../shared/styles/colors.dart';
 
 class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
+    return BlocConsumer<CartCubit, CartStates>(
       listener: (context, state) {},
       builder: (context, state) => Scaffold(
         body: ConditionalBuilder(
@@ -28,7 +28,7 @@ class CartScreen extends StatelessWidget {
                   separatorBuilder: (context, index) => SizedBox(
                     height: 15,
                   ),
-                  itemCount: AppCubit.get(context)
+                  itemCount: CartCubit.get(context)
                       .getCartModel!
                       .data!
                       .cartItems!
@@ -36,7 +36,7 @@ class CartScreen extends StatelessWidget {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) => product(
-                    AppCubit.get(context)
+                    CartCubit.get(context)
                         .getCartModel!
                         .data!
                         .cartItems![index]
@@ -59,7 +59,7 @@ class CartScreen extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                        'Total Items : ${AppCubit.get(context).getCartModel!.data!.cartItems!.length}',
+                        'Total Items : ${CartCubit.get(context).getCartModel!.data!.cartItems!.length}',
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge!
@@ -80,14 +80,14 @@ class CartScreen extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                        'Total price : ${AppCubit.get(context).getCartModel!.data!.total} EGP',
+                        'Total price : ${CartCubit.get(context).getCartModel!.data!.total} EGP',
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge!
                             .copyWith(fontSize: 25, color: indigoDye)),
                   ),
                 ),
-                if (AppCubit.get(context)
+                if (CartCubit.get(context)
                     .getCartModel!
                     .data!
                     .cartItems!
@@ -95,7 +95,7 @@ class CartScreen extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                if (AppCubit.get(context)
+                if (CartCubit.get(context)
                     .getCartModel!
                     .data!
                     .cartItems!
@@ -113,7 +113,7 @@ class CartScreen extends StatelessWidget {
             ),
           ),
           fallback: (context) => Center(child: CircularProgressIndicator()),
-          condition: AppCubit.get(context).getCartModel != null,
+          condition: CartCubit.get(context).getCartModel != null,
         ),
       ),
     );

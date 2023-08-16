@@ -1,5 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 import 'package:buybuddy/cubit/app/app_states.dart';
+import 'package:buybuddy/cubit/cart/cart_cubit.dart';
+import 'package:buybuddy/cubit/cart/cart_states.dart';
 import 'package:buybuddy/models/home_model.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
@@ -148,16 +150,22 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
               Padding(
                 padding: const EdgeInsets.all(40.0),
-                child: ConditionalBuilder(
-                  fallback: (context) =>
-                      Center(child: CircularProgressIndicator()),
-                  condition: state is! AddToCartLoadingState,
-                  builder: (context) => defaultButton(
-                      function: () {
-                        AppCubit.get(context).addToCart(product.id!, context);
-                      },
-                      context: context,
-                      text: "Add / Remove from Cart"),
+                child: BlocConsumer<CartCubit, CartStates>(
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    return ConditionalBuilder(
+                      fallback: (context) =>
+                          Center(child: CircularProgressIndicator()),
+                      condition: state is! AddToCartLoadingState,
+                      builder: (context) => defaultButton(
+                          function: () {
+                            CartCubit.get(context)
+                                .addToCart(product.id!, context);
+                          },
+                          context: context,
+                          text: "Add / Remove from Cart"),
+                    );
+                  },
                 ),
               ),
               Container(
