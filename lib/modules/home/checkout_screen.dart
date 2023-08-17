@@ -5,6 +5,7 @@ import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../cubit/map/checkout_states.dart';
 
@@ -118,14 +119,18 @@ class CheckOutScreen extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.2,
                 ),
+                Text(
+                  "Set Delivery Location",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 ConditionalBuilder(
-                  condition: CheckOutCubit.get(context).currentLatLong != null,
+                  condition: CheckOutCubit.get(context).permission !=
+                      LocationPermission.denied,
                   fallback: (context) => Container(
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(15)),
-                    width: double.infinity,
-                    height: 100,
+                    color: Colors.red,
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -142,69 +147,72 @@ class CheckOutScreen extends StatelessWidget {
                           ),
                         ]),
                   ),
-                  builder: (context) => Column(
-                    children: [
-                      Text(
-                        "Set Delivery Location",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          navigateTo(context, const MapScreen());
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15)),
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.height * 0.25,
-                          child: Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: GoogleMap(
-                                  scrollGesturesEnabled: false,
-                                  initialCameraPosition: CameraPosition(
-                                    target: LatLng(
-                                        CheckOutCubit.get(context)
-                                            .currentLatLong!
-                                            .latitude,
-                                        CheckOutCubit.get(context)
-                                            .currentLatLong!
-                                            .longitude),
-                                    zoom: 12,
-                                  ),
-                                  mapType: MapType.normal,
-                                  zoomControlsEnabled: false,
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                      color: ivory.withOpacity(0.8)),
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(16),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('Choose Another Location',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall!
-                                              .copyWith(fontSize: 15)),
-                                    ],
+                  builder: (context) => ConditionalBuilder(
+                    condition:
+                        CheckOutCubit.get(context).currentLatLong != null,
+                    fallback: (context) => const SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: Center(child: CircularProgressIndicator())),
+                    builder: (context) => Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            navigateTo(context, const MapScreen());
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15)),
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            child: Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: GoogleMap(
+                                    scrollGesturesEnabled: false,
+                                    initialCameraPosition: CameraPosition(
+                                      target: LatLng(
+                                          CheckOutCubit.get(context)
+                                              .currentLatLong!
+                                              .latitude,
+                                          CheckOutCubit.get(context)
+                                              .currentLatLong!
+                                              .longitude),
+                                      zoom: 12,
+                                    ),
+                                    mapType: MapType.normal,
+                                    zoomControlsEnabled: false,
+                                    markers: {},
                                   ),
                                 ),
-                              ),
-                            ],
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: ivory.withOpacity(0.8)),
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.all(16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text('Choose Another Location',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleSmall!
+                                                .copyWith(fontSize: 15)),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],

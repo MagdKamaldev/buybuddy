@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'checkout_states.dart';
 
 class CheckOutCubit extends Cubit<CheckOutStates> {
@@ -32,6 +33,8 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
 
   Position? currentLatLong;
 
+  late CameraPosition myPosition;
+
   void getLatLong() async {
     emit(GetLatLongLoadingState());
     currentLatLong = await Geolocator.getCurrentPosition().then(
@@ -39,6 +42,10 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
     );
     //print(currentLatLong!.latitude);
     emit(GetLatLongSuccessState());
+
+    myPosition = CameraPosition(
+        target: LatLng(currentLatLong!.latitude, currentLatLong!.longitude),
+        zoom: 17.4746);
   }
 
   List<Placemark> placemarks = [];
