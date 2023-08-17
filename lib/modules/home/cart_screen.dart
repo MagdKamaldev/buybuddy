@@ -112,7 +112,8 @@ class CartScreen extends StatelessWidget {
             ),
           ),
           fallback: (context) => Center(child: CircularProgressIndicator()),
-          condition: CartCubit.get(context).getCartModel != null,
+          condition: CartCubit.get(context).getCartModel != null &&
+              state is GetCartDataSuccessState,
         ),
       ),
     );

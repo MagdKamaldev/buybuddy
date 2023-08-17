@@ -21,9 +21,7 @@ class MapScreenState extends State<MapScreen> {
     super.initState();
   }
 
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-
+  GoogleMapController? mapController;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CheckOutCubit, CheckOutStates>(
@@ -41,26 +39,79 @@ class MapScreenState extends State<MapScreen> {
           ),
           body: GoogleMap(
             mapType: MapType.normal,
+            zoomGesturesEnabled: true,
             initialCameraPosition: CheckOutCubit.get(context).myPosition,
-            zoomControlsEnabled: false,
             onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
+              mapController = controller;
+            },
+            markers: {
+              Marker(
+                markerId: const MarkerId('userLocationMarker'),
+                position: LatLng(
+                  CheckOutCubit.get(context).currentLatLong!.latitude,
+                  CheckOutCubit.get(context).currentLatLong!.longitude,
+                ),
+                icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor
+                    .hueAzure), // You can customize the marker icon
+              ),
             },
           ),
           floatingActionButton: SizedBox(
             width: MediaQuery.of(context).size.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                defaultButton(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  function: () {
-                    CheckOutCubit.get(context).getCountry();
-                  },
-                  context: context,
-                  text: "current location",
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: prussianBlue,
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                    child: TextButton(
+                        onPressed: () {
+                          LatLng latLng = LatLng(
+                              CheckOutCubit.get(context)
+                                  .currentLatLong!
+                                  .latitude,
+                              CheckOutCubit.get(context)
+                                  .currentLatLong!
+                                  .longitude);
+                          mapController!.animateCamera(CameraUpdate.newLatLng(
+                            latLng,
+                          ));
+                        },
+                        child: Text(
+                          "Current Location",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(color: ivory),
+                        )),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          bottomNavigationBar: GestureDetector(
+            onTap: () {},
+            child: Container(
+              color: indigoDye,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.075,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Confirm",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(color: ivory),
+                  )
+                ],
+              ),
             ),
           ),
         );

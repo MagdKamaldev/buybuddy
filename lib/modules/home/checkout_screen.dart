@@ -5,7 +5,6 @@ import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../cubit/map/checkout_states.dart';
 
@@ -127,25 +126,34 @@ class CheckOutScreen extends StatelessWidget {
                   height: 20,
                 ),
                 ConditionalBuilder(
-                  condition: CheckOutCubit.get(context).permission !=
-                      LocationPermission.denied,
-                  fallback: (context) => Container(
-                    color: Colors.red,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "No Location Access",
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          defaultTextButton(
-                            function: () async {
-                              CheckOutCubit.get(context).requestPermission();
-                            },
-                            text: "Request Permission and set location",
-                            context: context,
-                          ),
-                        ]),
+                  condition: state is! ResquestPermissionWarningState,
+                  fallback: (context) => Align(
+                    alignment: Alignment.center,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        color: Colors.red,
+                        child: Padding(
+                          padding: const EdgeInsets.all(13.0),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "No Location Access",
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "give the app location permissions in settings !",
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.titleSmall,
+                                )
+                              ]),
+                        ),
+                      ),
+                    ),
                   ),
                   builder: (context) => ConditionalBuilder(
                     condition:
@@ -183,7 +191,23 @@ class CheckOutScreen extends StatelessWidget {
                                     ),
                                     mapType: MapType.normal,
                                     zoomControlsEnabled: false,
-                                    markers: {},
+                                    markers: {
+                                      Marker(
+                                        markerId: const MarkerId(
+                                            'userLocationMarker'),
+                                        position: LatLng(
+                                          CheckOutCubit.get(context)
+                                              .currentLatLong!
+                                              .latitude,
+                                          CheckOutCubit.get(context)
+                                              .currentLatLong!
+                                              .longitude,
+                                        ),
+                                        icon: BitmapDescriptor
+                                            .defaultMarkerWithHue(BitmapDescriptor
+                                                .hueAzure), // You can customize the marker icon
+                                      ),
+                                    },
                                   ),
                                 ),
                                 Align(

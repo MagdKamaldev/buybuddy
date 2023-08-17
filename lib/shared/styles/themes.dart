@@ -30,7 +30,7 @@ ThemeData theme = ThemeData(
     unselectedLabelStyle:
         TextStyle(fontSize: 14, color: prussianBlue, fontFamily: "Rubik"),
     selectedLabelStyle:
-        TextStyle(fontSize: 14, color: ivory, fontFamily: "Rubik"),
+        TextStyle(fontSize: 14, color: ivory, fontFamily: "Rubik",),
   ),
   useMaterial3: true,
 );

@@ -8,6 +8,8 @@ class ResquestPermissionSuccessState extends CheckOutStates{}
 
 class ResquestPermissionErrorState extends CheckOutStates{}
 
+class ResquestPermissionWarningState extends CheckOutStates{}
+
 class GetLatLongLoadingState extends CheckOutStates{}
 
 class GetLatLongSuccessState extends CheckOutStates{}
