@@ -1,7 +1,7 @@
-import 'dart:async';
 import 'package:buybuddy/cubit/map/checkout_cubit.dart';
 import 'package:buybuddy/cubit/map/checkout_states.dart';
 import 'package:buybuddy/shared/components/components.dart';
+import 'package:buybuddy/shared/networks/cache_helper.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,13 +15,34 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
+  Set<Marker> myMarkers = {};
+
+  setMarkerCustomImage() async {
+    myMarkers.add(Marker(
+      onTap: () => showCustomSnackBar(context, "Long press to move", ivory),
+      markerId: const MarkerId('userLocationMarker'),
+      position: LatLng(
+        CheckOutCubit.get(context).currentLatLong!.latitude,
+        CheckOutCubit.get(context).currentLatLong!.longitude,
+      ),
+      draggable: true,
+      onDragEnd: (LatLng t) {},
+      icon: await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration.empty,
+        "assets/images/marker.png",
+      ),
+    ));
+  }
+
   @override
   void initState() {
     CheckOutCubit.get(context).getLatLong();
+    setMarkerCustomImage();
     super.initState();
   }
 
   GoogleMapController? mapController;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CheckOutCubit, CheckOutStates>(
@@ -38,23 +59,30 @@ class MapScreenState extends State<MapScreen> {
             centerTitle: true,
           ),
           body: GoogleMap(
+            onTap: (LatLng latLng) async {
+              myMarkers.clear();
+              myMarkers.add(Marker(
+                onTap: () =>
+                    showCustomSnackBar(context, "Long press to move", ivory),
+                markerId: const MarkerId('userLocationMarker'),
+                position: latLng,
+                draggable: true,
+                onDragEnd: (LatLng t) {},
+                icon: await BitmapDescriptor.fromAssetImage(
+                  ImageConfiguration.empty,
+                  "assets/images/marker.png",
+                ),
+              ));
+              setState(() {});
+            },
             mapType: MapType.normal,
+            zoomControlsEnabled: false,
             zoomGesturesEnabled: true,
             initialCameraPosition: CheckOutCubit.get(context).myPosition,
             onMapCreated: (GoogleMapController controller) {
               mapController = controller;
             },
-            markers: {
-              Marker(
-                markerId: const MarkerId('userLocationMarker'),
-                position: LatLng(
-                  CheckOutCubit.get(context).currentLatLong!.latitude,
-                  CheckOutCubit.get(context).currentLatLong!.longitude,
-                ),
-                icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor
-                    .hueAzure), // You can customize the marker icon
-              ),
-            },
+            markers: myMarkers,
           ),
           floatingActionButton: SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -70,7 +98,7 @@ class MapScreenState extends State<MapScreen> {
                       borderRadius: BorderRadius.circular(13),
                     ),
                     child: TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           LatLng latLng = LatLng(
                               CheckOutCubit.get(context)
                                   .currentLatLong!
@@ -81,6 +109,30 @@ class MapScreenState extends State<MapScreen> {
                           mapController!.animateCamera(CameraUpdate.newLatLng(
                             latLng,
                           ));
+
+                          myMarkers.clear();
+                          myMarkers.add(
+                            Marker(
+                              onTap: () => showCustomSnackBar(
+                                  context, "Long press to move", ivory),
+                              markerId: const MarkerId('userLocationMarker'),
+                              position: LatLng(
+                                CheckOutCubit.get(context)
+                                    .currentLatLong!
+                                    .latitude,
+                                CheckOutCubit.get(context)
+                                    .currentLatLong!
+                                    .longitude,
+                              ),
+                              draggable: true,
+                              onDragEnd: (LatLng t) {},
+                              icon: await BitmapDescriptor.fromAssetImage(
+                                ImageConfiguration.empty,
+                                "assets/images/marker.png",
+                              ),
+                            ),
+                          );
+                          setState(() {});
                         },
                         child: Text(
                           "Current Location",
@@ -95,7 +147,13 @@ class MapScreenState extends State<MapScreen> {
             ),
           ),
           bottomNavigationBar: GestureDetector(
-            onTap: () {},
+            onTap: () async {
+              LatLng markerPosition = myMarkers.first.position;
+              await CacheHelper.saveData(key: "latitude", value: 
+                 markerPosition.latitude,);
+                   await CacheHelper.saveData(key: "longitude", value: 
+                 markerPosition.longitude,);
+            },
             child: Container(
               color: indigoDye,
               width: MediaQuery.of(context).size.width,
