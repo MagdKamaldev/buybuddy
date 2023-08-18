@@ -2,7 +2,6 @@
 import 'package:buybuddy/cubit/map/checkout_cubit.dart';
 import 'package:buybuddy/modules/home/map_screen.dart';
 import 'package:buybuddy/shared/components/components.dart';
-import 'package:buybuddy/shared/networks/cache_helper.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -10,43 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../cubit/map/checkout_states.dart';
 
-class CheckOutScreen extends StatefulWidget {
-  @override
-  State<CheckOutScreen> createState() => _CheckOutScreenState();
-}
-
-class _CheckOutScreenState extends State<CheckOutScreen> {
-  Set<Marker> marker = {};
-  setMarkerCustomImage() async {
-    marker.add(Marker(
-      onTap: () => showCustomSnackBar(context, "Long press to move", ivory),
-      markerId: const MarkerId('userLocationMarker'),
-      position: latitude == null || longitude == null
-          ? LatLng(
-              CheckOutCubit.get(context).currentLatLong!.latitude,
-              CheckOutCubit.get(context).currentLatLong!.longitude,
-            )
-          : LatLng(latitude!, longitude!),
-      draggable: true,
-      onDragEnd: (LatLng t) {},
-      icon: await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty,
-        "assets/images/location_small.png",
-      ),
-    ));
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    CheckOutCubit.get(context).getLatLong();
-
-    super.initState();
-  }
-
-  double? latitude = CacheHelper.getData(key: "latitude");
-  double? longitude = CacheHelper.getData(key: "longitude");
-
+class CheckOutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CheckOutCubit, CheckOutStates>(
@@ -213,11 +176,16 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                     zoomGesturesEnabled: false,
                                     scrollGesturesEnabled: false,
                                     onMapCreated: (controller) {
-                                      setMarkerCustomImage();
+                                      CheckOutCubit.get(context)
+                                          .setMarkerCustomImage(context);
                                     },
                                     initialCameraPosition: CameraPosition(
                                       target:
-                                          latitude == null || longitude == null
+                                          CheckOutCubit.get(context).latitude ==
+                                                      null ||
+                                                  CheckOutCubit.get(context)
+                                                          .longitude ==
+                                                      null
                                               ? LatLng(
                                                   CheckOutCubit.get(context)
                                                       .currentLatLong!
@@ -226,12 +194,16 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                       .currentLatLong!
                                                       .longitude,
                                                 )
-                                              : LatLng(latitude!, longitude!),
+                                              : LatLng(
+                                                  CheckOutCubit.get(context)
+                                                      .latitude!,
+                                                  CheckOutCubit.get(context)
+                                                      .longitude!),
                                       zoom: 15,
                                     ),
                                     mapType: MapType.normal,
                                     zoomControlsEnabled: false,
-                                    markers: marker,
+                                    markers: CheckOutCubit.get(context).marker,
                                   ),
                                 ),
                                 Align(

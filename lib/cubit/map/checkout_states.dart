@@ -15,3 +15,8 @@ class GetLatLongLoadingState extends CheckOutStates{}
 class GetLatLongSuccessState extends CheckOutStates{}
 
 class GetLatLongErrorState extends CheckOutStates{}
+
+class SetMarkerLoadingState extends CheckOutStates{}
+
+class SetMarkerSuccessState extends CheckOutStates{}
+
