@@ -10,6 +10,7 @@ class CartData {
     required this.data,
   });
 
+
   factory CartData.fromJson(Map<String, dynamic> json) {
     return CartData(
       status: json['status'],

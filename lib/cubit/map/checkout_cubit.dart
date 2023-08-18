@@ -78,7 +78,6 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
   setMarkerCustomImage(context) async {
     emit(SetMarkerLoadingState());
     marker.add(Marker(
-      onTap: () => showCustomSnackBar(context, "Long press to move", ivory),
       markerId: const MarkerId('userLocationMarker'),
       position: latitude == null || longitude == null
           ? LatLng(
