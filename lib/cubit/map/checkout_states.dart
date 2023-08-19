@@ -20,3 +20,4 @@ class SetMarkerLoadingState extends CheckOutStates{}
 
 class SetMarkerSuccessState extends CheckOutStates{}
 
+class SetOrderLoactionState extends CheckOutStates{}

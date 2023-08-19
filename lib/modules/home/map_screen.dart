@@ -1,7 +1,6 @@
 import 'package:buybuddy/cubit/map/checkout_cubit.dart';
 import 'package:buybuddy/cubit/map/checkout_states.dart';
 import 'package:buybuddy/shared/components/components.dart';
-import 'package:buybuddy/shared/networks/cache_helper.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,10 +20,13 @@ class MapScreenState extends State<MapScreen> {
     myMarkers.add(Marker(
       onTap: () => showCustomSnackBar(context, "Long press to move", ivory),
       markerId: const MarkerId('userLocationMarker'),
-      position: LatLng(
-        CheckOutCubit.get(context).currentLatLong!.latitude,
-        CheckOutCubit.get(context).currentLatLong!.longitude,
-      ),
+      position: CheckOutCubit.get(context).orderLatLong == null
+          ? LatLng(
+              CheckOutCubit.get(context).currentLatLong!.latitude,
+              CheckOutCubit.get(context).currentLatLong!.longitude,
+            )
+          : LatLng(CheckOutCubit.get(context).orderLatLong!.latitude,
+              CheckOutCubit.get(context).orderLatLong!.longitude),
       draggable: true,
       onDragEnd: (LatLng t) {},
       icon: await BitmapDescriptor.fromAssetImage(
@@ -38,6 +40,7 @@ class MapScreenState extends State<MapScreen> {
   void initState() {
     CheckOutCubit.get(context).getLatLong();
     setMarkerCustomImage();
+
     super.initState();
   }
 
@@ -50,6 +53,13 @@ class MapScreenState extends State<MapScreen> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {});
+              },
+            ),
             toolbarHeight: 80,
             title: Text(
               "Choose Location",
@@ -78,7 +88,15 @@ class MapScreenState extends State<MapScreen> {
             mapType: MapType.normal,
             zoomControlsEnabled: false,
             zoomGesturesEnabled: true,
-            initialCameraPosition: CheckOutCubit.get(context).myPosition,
+            initialCameraPosition:
+                CheckOutCubit.get(context).orderLatLong == null
+                    ? CheckOutCubit.get(context).myPosition
+                    : CameraPosition(
+                        zoom: 16,
+                        target: LatLng(
+                            CheckOutCubit.get(context).orderLatLong!.latitude,
+                            CheckOutCubit.get(context).orderLatLong!.longitude),
+                      ),
             onMapCreated: (GoogleMapController controller) {
               mapController = controller;
             },
@@ -149,10 +167,9 @@ class MapScreenState extends State<MapScreen> {
           bottomNavigationBar: GestureDetector(
             onTap: () async {
               LatLng markerPosition = myMarkers.first.position;
-              await CacheHelper.saveData(key: "latitude", value: 
-                 markerPosition.latitude,);
-                   await CacheHelper.saveData(key: "longitude", value: 
-                 markerPosition.longitude,);
+              CheckOutCubit.get(context).setOrederLocation(
+                  markerPosition.latitude, markerPosition.longitude);
+              showDoneGetBack(context, MediaQuery.of(context).size);
             },
             child: Container(
               color: indigoDye,

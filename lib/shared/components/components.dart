@@ -3,6 +3,7 @@ import 'package:buybuddy/shared/networks/cache_helper.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../modules/onboarding/sign_in.dart';
 
@@ -117,6 +118,47 @@ void showCustomSnackBar(
       ),
       backgroundColor: backgroundColor,
       duration: Duration(seconds: 2),
+    ),
+  );
+}
+
+void showDoneGetBack(BuildContext context, Size size) {
+  showDialog(
+    context: context,
+    builder: (context) => Padding(
+      padding: EdgeInsets.only(
+          left: size.width * 0.2,
+          right: size.width * 0.2,
+          top: size.height * 0.3,
+          bottom: size.height * 0.3),
+      child: Container(
+        width: size.width * 0.6,
+        height: size.height * 0.4,
+        decoration: BoxDecoration(
+            color: ivory, borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+                height: size.height * 0.25,
+                width: size.width * 0.48,
+                child: Lottie.asset("assets/animations/done.json")),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            Text(
+              "location determined",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            defaultTextButton(
+                function: () {
+                  Navigator.pop(context);
+                },
+                text: "Done",
+                context: context)
+          ],
+        ),
+      ),
     ),
   );
 }

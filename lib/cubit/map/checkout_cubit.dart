@@ -1,11 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../shared/components/components.dart';
-import '../../shared/networks/cache_helper.dart';
-import '../../shared/styles/colors.dart';
 import 'checkout_states.dart';
 
 class CheckOutCubit extends Cubit<CheckOutStates> {
@@ -71,27 +67,36 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
         1000;
   }
 
-  Set<Marker> marker = {};
-  double? latitude = CacheHelper.getData(key: "latitude");
-  double? longitude = CacheHelper.getData(key: "longitude");
+  
+  
 
-  setMarkerCustomImage(context) async {
-    emit(SetMarkerLoadingState());
-    marker.add(Marker(
-      markerId: const MarkerId('userLocationMarker'),
-      position: latitude == null || longitude == null
-          ? LatLng(
-              CheckOutCubit.get(context).currentLatLong!.latitude,
-              CheckOutCubit.get(context).currentLatLong!.longitude,
-            )
-          : LatLng(latitude!, longitude!),
-      draggable: true,
-      onDragEnd: (LatLng t) {},
-      icon: await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty,
-        "assets/images/location_small.png",
-      ),
-    ));
-    emit(SetMarkerSuccessState());
+Position? orderLatLong;
+
+  void setOrederLocation(double latitude, double longitude) {
+    orderLatLong = Position(
+        latitude: latitude,
+        longitude: longitude,
+        timestamp: DateTime.now(),
+        accuracy: 10.0,
+        altitude: 0.0,
+        heading: 0.0,
+        speed: 0.0,
+        speedAccuracy: 0.0);
+
+    emit(SetOrderLoactionState());
   }
+
+  // void saveorderLocation(Set<Marker> myMarkers) async {
+  //   LatLng markerPosition = myMarkers.first.position;
+  //   await CacheHelper.saveData(
+  //     key: "latitude",
+  //     value: markerPosition.latitude,
+  //   );
+  //   await CacheHelper.saveData(
+  //     key: "longitude",
+  //     value: markerPosition.longitude,
+  //   );
+
+  //   //print(CacheHelper.getData(key: "latitude"));
+  // }
 }

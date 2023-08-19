@@ -9,7 +9,40 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../cubit/map/checkout_states.dart';
 
-class CheckOutScreen extends StatelessWidget {
+class CheckOutScreen extends StatefulWidget {
+  @override
+  State<CheckOutScreen> createState() => _CheckOutScreenState();
+}
+
+class _CheckOutScreenState extends State<CheckOutScreen> {
+  Set<Marker> myMarkers = {};
+
+  setMarkerCustomImage() async {
+    myMarkers.add(Marker(
+      onTap: () => showCustomSnackBar(context, "Long press to move", ivory),
+      markerId: const MarkerId('userLocationMarker'),
+      position: CheckOutCubit.get(context).orderLatLong == null
+          ? LatLng(
+              CheckOutCubit.get(context).currentLatLong!.latitude,
+              CheckOutCubit.get(context).currentLatLong!.longitude,
+            )
+          : LatLng(CheckOutCubit.get(context).orderLatLong!.latitude,
+              CheckOutCubit.get(context).orderLatLong!.longitude),
+      draggable: true,
+      onDragEnd: (LatLng t) {},
+      icon: await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration.empty,
+        "assets/images/marker.png",
+      ),
+    ));
+  }
+
+  @override
+  void initState() {
+    setMarkerCustomImage();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CheckOutCubit, CheckOutStates>(
@@ -176,34 +209,26 @@ class CheckOutScreen extends StatelessWidget {
                                     zoomGesturesEnabled: false,
                                     scrollGesturesEnabled: false,
                                     onMapCreated: (controller) {
-                                      CheckOutCubit.get(context)
-                                          .setMarkerCustomImage(context);
+                                      setMarkerCustomImage();
                                     },
-                                    initialCameraPosition: CameraPosition(
-                                      target:
-                                          CheckOutCubit.get(context).latitude ==
-                                                      null ||
-                                                  CheckOutCubit.get(context)
-                                                          .longitude ==
-                                                      null
-                                              ? LatLng(
-                                                  CheckOutCubit.get(context)
-                                                      .currentLatLong!
-                                                      .latitude,
-                                                  CheckOutCubit.get(context)
-                                                      .currentLatLong!
-                                                      .longitude,
-                                                )
-                                              : LatLng(
-                                                  CheckOutCubit.get(context)
-                                                      .latitude!,
-                                                  CheckOutCubit.get(context)
-                                                      .longitude!),
-                                      zoom: 15,
-                                    ),
+                                    initialCameraPosition: CheckOutCubit.get(
+                                                    context)
+                                                .orderLatLong ==
+                                            null
+                                        ? CheckOutCubit.get(context).myPosition
+                                        : CameraPosition(
+                                            zoom: 16,
+                                            target: LatLng(
+                                                CheckOutCubit.get(context)
+                                                    .orderLatLong!
+                                                    .latitude,
+                                                CheckOutCubit.get(context)
+                                                    .orderLatLong!
+                                                    .longitude),
+                                          ),
                                     mapType: MapType.normal,
                                     zoomControlsEnabled: false,
-                                    markers: CheckOutCubit.get(context).marker,
+                                    markers: myMarkers,
                                   ),
                                 ),
                                 Align(
