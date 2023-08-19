@@ -35,7 +35,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         "assets/images/marker.png",
       ),
     ));
+    setState(() {});
   }
+
+  
 
   @override
   void initState() {
@@ -206,11 +209,27 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(16),
                                   child: GoogleMap(
-                                    zoomGesturesEnabled: false,
-                                    scrollGesturesEnabled: false,
-                                    onMapCreated: (controller) {
-                                      setMarkerCustomImage();
+                                    onTap: (LatLng latLng) async {
+                                      myMarkers.clear();
+                                      myMarkers.add(Marker(
+                                        onTap: () => showCustomSnackBar(context,
+                                            "Long press to move", ivory),
+                                        markerId: const MarkerId(
+                                            'userLocationMarker'),
+                                        position: latLng,
+                                        draggable: true,
+                                        onDragEnd: (LatLng t) {},
+                                        icon: await BitmapDescriptor
+                                            .fromAssetImage(
+                                          ImageConfiguration.empty,
+                                          "assets/images/marker.png",
+                                        ),
+                                      ));
+                                      setState(() {});
                                     },
+                                    mapType: MapType.normal,
+                                    zoomControlsEnabled: false,
+                                    zoomGesturesEnabled: false,
                                     initialCameraPosition: CheckOutCubit.get(
                                                     context)
                                                 .orderLatLong ==
@@ -226,8 +245,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                     .orderLatLong!
                                                     .longitude),
                                           ),
-                                    mapType: MapType.normal,
-                                    zoomControlsEnabled: false,
+                                    onMapCreated:
+                                        (GoogleMapController controller) {},
                                     markers: myMarkers,
                                   ),
                                 ),

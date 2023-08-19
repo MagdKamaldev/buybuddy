@@ -53,13 +53,6 @@ class MapScreenState extends State<MapScreen> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-                setState(() {});
-              },
-            ),
             toolbarHeight: 80,
             title: Text(
               "Choose Location",
