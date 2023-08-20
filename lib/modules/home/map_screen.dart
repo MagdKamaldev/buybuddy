@@ -14,32 +14,9 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
-  Set<Marker> myMarkers = {};
-
-  setMarkerCustomImage() async {
-    myMarkers.add(Marker(
-      onTap: () => showCustomSnackBar(context, "Long press to move", ivory),
-      markerId: const MarkerId('userLocationMarker'),
-      position: CheckOutCubit.get(context).orderLatLong == null
-          ? LatLng(
-              CheckOutCubit.get(context).currentLatLong!.latitude,
-              CheckOutCubit.get(context).currentLatLong!.longitude,
-            )
-          : LatLng(CheckOutCubit.get(context).orderLatLong!.latitude,
-              CheckOutCubit.get(context).orderLatLong!.longitude),
-      draggable: true,
-      onDragEnd: (LatLng t) {},
-      icon: await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty,
-        "assets/images/marker.png",
-      ),
-    ));
-  }
-
   @override
   void initState() {
     CheckOutCubit.get(context).getLatLong();
-    setMarkerCustomImage();
 
     super.initState();
   }
@@ -63,19 +40,19 @@ class MapScreenState extends State<MapScreen> {
           ),
           body: GoogleMap(
             onTap: (LatLng latLng) async {
-              myMarkers.clear();
-              myMarkers.add(Marker(
-                onTap: () =>
-                    showCustomSnackBar(context, "Long press to move", ivory),
-                markerId: const MarkerId('userLocationMarker'),
-                position: latLng,
-                draggable: true,
-                onDragEnd: (LatLng t) {},
-                icon: await BitmapDescriptor.fromAssetImage(
-                  ImageConfiguration.empty,
-                  "assets/images/marker.png",
-                ),
-              ));
+              CheckOutCubit.get(context).myMarkers.clear();
+              CheckOutCubit.get(context).myMarkers.add(Marker(
+                    onTap: () => showCustomSnackBar(
+                        context, "Long press to move", ivory),
+                    markerId: const MarkerId('userLocationMarker'),
+                    position: latLng,
+                    draggable: true,
+                    onDragEnd: (LatLng t) {},
+                    icon: await BitmapDescriptor.fromAssetImage(
+                      ImageConfiguration.empty,
+                      "assets/images/marker.png",
+                    ),
+                  ));
               setState(() {});
             },
             mapType: MapType.normal,
@@ -93,7 +70,7 @@ class MapScreenState extends State<MapScreen> {
             onMapCreated: (GoogleMapController controller) {
               mapController = controller;
             },
-            markers: myMarkers,
+            markers: CheckOutCubit.get(context).myMarkers,
           ),
           floatingActionButton: SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -121,28 +98,29 @@ class MapScreenState extends State<MapScreen> {
                             latLng,
                           ));
 
-                          myMarkers.clear();
-                          myMarkers.add(
-                            Marker(
-                              onTap: () => showCustomSnackBar(
-                                  context, "Long press to move", ivory),
-                              markerId: const MarkerId('userLocationMarker'),
-                              position: LatLng(
-                                CheckOutCubit.get(context)
-                                    .currentLatLong!
-                                    .latitude,
-                                CheckOutCubit.get(context)
-                                    .currentLatLong!
-                                    .longitude,
-                              ),
-                              draggable: true,
-                              onDragEnd: (LatLng t) {},
-                              icon: await BitmapDescriptor.fromAssetImage(
-                                ImageConfiguration.empty,
-                                "assets/images/marker.png",
-                              ),
-                            ),
-                          );
+                          CheckOutCubit.get(context).myMarkers.clear();
+                          CheckOutCubit.get(context).myMarkers.add(
+                                Marker(
+                                  onTap: () => showCustomSnackBar(
+                                      context, "Long press to move", ivory),
+                                  markerId:
+                                      const MarkerId('userLocationMarker'),
+                                  position: LatLng(
+                                    CheckOutCubit.get(context)
+                                        .currentLatLong!
+                                        .latitude,
+                                    CheckOutCubit.get(context)
+                                        .currentLatLong!
+                                        .longitude,
+                                  ),
+                                  draggable: true,
+                                  onDragEnd: (LatLng t) {},
+                                  icon: await BitmapDescriptor.fromAssetImage(
+                                    ImageConfiguration.empty,
+                                    "assets/images/marker.png",
+                                  ),
+                                ),
+                              );
                           setState(() {});
                         },
                         child: Text(
@@ -159,7 +137,8 @@ class MapScreenState extends State<MapScreen> {
           ),
           bottomNavigationBar: GestureDetector(
             onTap: () async {
-              LatLng markerPosition = myMarkers.first.position;
+              LatLng markerPosition =
+                  CheckOutCubit.get(context).myMarkers.first.position;
               CheckOutCubit.get(context).setOrederLocation(
                   markerPosition.latitude, markerPosition.longitude);
               showDoneGetBack(context, MediaQuery.of(context).size);

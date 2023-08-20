@@ -101,7 +101,7 @@ class CartScreen extends StatelessWidget {
                     .isNotEmpty)
                   defaultButton(
                       function: () {
-                        navigateTo(context, CheckOutScreen());
+                        navigateTo(context, SetLocationScreen());
                       },
                       context: context,
                       text: "Proceed to Checkout"),

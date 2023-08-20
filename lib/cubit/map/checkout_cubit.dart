@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../shared/components/components.dart';
+import '../../shared/styles/colors.dart';
 import 'checkout_states.dart';
 
 class CheckOutCubit extends Cubit<CheckOutStates> {
@@ -67,10 +70,7 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
         1000;
   }
 
-  
-  
-
-Position? orderLatLong;
+  Position? orderLatLong;
 
   void setOrederLocation(double latitude, double longitude) {
     orderLatLong = Position(
@@ -86,17 +86,28 @@ Position? orderLatLong;
     emit(SetOrderLoactionState());
   }
 
-  // void saveorderLocation(Set<Marker> myMarkers) async {
-  //   LatLng markerPosition = myMarkers.first.position;
-  //   await CacheHelper.saveData(
-  //     key: "latitude",
-  //     value: markerPosition.latitude,
-  //   );
-  //   await CacheHelper.saveData(
-  //     key: "longitude",
-  //     value: markerPosition.longitude,
-  //   );
+  Set<Marker> myMarkers = {};
 
-  //   //print(CacheHelper.getData(key: "latitude"));
-  // }
+  void setMarkerCustomImage(context) async {
+    emit(SetMarkerLoadingState());
+    myMarkers.clear();
+    myMarkers.add(Marker(
+      onTap: () => showCustomSnackBar(context, "Long press to move", ivory),
+      markerId: const MarkerId('userLocationMarker'),
+      position: CheckOutCubit.get(context).orderLatLong == null
+          ? LatLng(
+              CheckOutCubit.get(context).currentLatLong!.latitude,
+              CheckOutCubit.get(context).currentLatLong!.longitude,
+            )
+          : LatLng(CheckOutCubit.get(context).orderLatLong!.latitude,
+              CheckOutCubit.get(context).orderLatLong!.longitude),
+      draggable: true,
+      onDragEnd: (LatLng t) {},
+      icon: await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration.empty,
+        "assets/images/marker.png",
+      ),
+    ));
+    emit(SetMarkerSuccessState());
+  }
 }
