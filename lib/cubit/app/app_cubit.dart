@@ -50,6 +50,9 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
+
+  
+
   HomeModel? homeModel;
 
 

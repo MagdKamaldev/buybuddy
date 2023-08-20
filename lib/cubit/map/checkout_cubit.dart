@@ -16,13 +16,13 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
 
   bool? servicesEnabled;
   LocationPermission? permission;
-
+  
   Future requestPermission() async {
     emit(ResquestPermissionLoadingState());
 
     servicesEnabled = await Geolocator.isLocationServiceEnabled();
     permission = await Geolocator.checkPermission();
-
+   
     permission = await Geolocator.requestPermission().then((value) {
       if (permission != LocationPermission.denied) {
         getLatLong();
