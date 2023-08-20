@@ -1,6 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 import 'package:buybuddy/cubit/favourites/favourites_cubit.dart';
-import 'package:buybuddy/modules/home/checkout_screen.dart';
+import 'package:buybuddy/modules/home/checkout/checkout_screen.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -101,7 +101,7 @@ class CartScreen extends StatelessWidget {
                     .isNotEmpty)
                   defaultButton(
                       function: () {
-                        navigateTo(context, SetLocationScreen());
+                        navigateTo(context, CheckoutScreen());
                       },
                       context: context,
                       text: "Proceed to Checkout"),
