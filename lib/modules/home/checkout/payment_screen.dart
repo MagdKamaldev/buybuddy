@@ -1,5 +1,6 @@
 import 'package:buybuddy/cubit/cart/cart_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import '../../../shared/components/components.dart';
 import '../../../shared/styles/colors.dart';
 
@@ -21,6 +22,36 @@ class PaymentScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
+            Row(
+              children: [
+                Text(
+                  "Don't pay real money this is a trial app  ",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(fontSize: 16),
+                ),
+                const Icon(
+                  Icons.warning,
+                  color: Colors.red,
+                )
+              ],
+            ),
+            SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                height: MediaQuery.of(context).size.height * 0.2,
+                child: Lottie.asset("assets/animations/payment_title.json")),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.025,
+            ),
+            Container(
+              width: double.infinity,
+              height: 1,
+              color: prussianBlue,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.025,
+            ),
             Text(
               "${CartCubit.get(context).getCartModel!.data!.total.toString()} EGP",
               style: Theme.of(context).textTheme.bodyLarge,
@@ -164,6 +195,14 @@ class PaymentScreen extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.08,
+            ),
+            defaultButton(
+                function: () {},
+                context: context,
+                text: "Confirm Payment",
+                height: MediaQuery.of(context).size.height * 0.08),
           ],
         ),
       ),

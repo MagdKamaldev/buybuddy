@@ -21,7 +21,7 @@ class CheckoutScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
+        padding: const EdgeInsets.symmetric(horizontal: 42),
         child: ListView(
           children: [
             GestureDetector(
@@ -97,6 +97,15 @@ class CheckoutScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.07,
+            ),
+            defaultButton(
+                function: () {},
+                context: context,
+                text: "Place Order",
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.07)
           ],
         ),
       ),
