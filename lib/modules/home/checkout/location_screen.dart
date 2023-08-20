@@ -35,90 +35,7 @@ class SetLocationScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Text(
-                  //   "Payment",
-                  //   style: Theme.of(context).textTheme.bodyLarge,
-                  // ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-                  // SizedBox(
-                  //   height: 70,
-                  //   child: GestureDetector(
-                  //     onTap: () => showCardSheet(context: context),
-                  //     child: Card(
-                  //       color: ivory,
-                  //       child: Row(
-                  //         children: [
-                  //           const SizedBox(
-                  //             width: 10,
-                  //           ),
-                  //           Container(
-                  //             width: 30,
-                  //             height: 30,
-                  //             decoration: BoxDecoration(
-                  //               shape: BoxShape.circle,
-                  //               border: Border.all(color: indigoDye, width: 2),
-                  //             ),
-                  //           ),
-                  //           const SizedBox(
-                  //             width: 20,
-                  //           ),
-                  //           Text(
-                  //             "+ Add Card",
-                  //             style: Theme.of(context).textTheme.titleMedium,
-                  //           ),
-                  //           const SizedBox(
-                  //             width: 10,
-                  //           ),
-                  //           const Icon(Icons.credit_card)
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // SizedBox(
-                  //   height: 70,
-                  //   child: GestureDetector(
-                  //     onTap: () {},
-                  //     child: Card(
-                  //       color: ivory,
-                  //       child: Row(
-                  //         children: [
-                  //           const SizedBox(
-                  //             width: 10,
-                  //           ),
-                  //           Container(
-                  //             width: 30,
-                  //             height: 30,
-                  //             decoration: BoxDecoration(
-                  //               shape: BoxShape.circle,
-                  //               border: Border.all(color: indigoDye, width: 2),
-                  //             ),
-                  //           ),
-                  //           const SizedBox(
-                  //             width: 20,
-                  //           ),
-                  //           Text(
-                  //             "Cash on delivery",
-                  //             style: Theme.of(context).textTheme.titleMedium,
-                  //           ),
-                  //           const SizedBox(
-                  //             width: 10,
-                  //           ),
-                  //           const Icon(Icons.monetization_on),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: MediaQuery.of(context).size.height * 0.2,
-                  // ),
+                children: [                 
                   Text(
                     "Set location on map",
                     style: Theme.of(context).textTheme.bodyLarge,
@@ -255,7 +172,7 @@ class SetLocationScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
-                          color: Colors.black, width: 1), // Border styling
+                          color: Colors.black, width: 1), 
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
