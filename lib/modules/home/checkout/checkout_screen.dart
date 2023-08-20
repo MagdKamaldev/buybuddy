@@ -50,7 +50,7 @@ class CheckoutScreen extends StatelessWidget {
               isLast: true,
               isPast: false,
               eventCard: Text(
-                "coupons",
+                "Confirm phone",
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!
