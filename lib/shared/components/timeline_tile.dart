@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:buybuddy/shared/components/event_card.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,7 @@ class MyTimeLineTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: MediaQuery.of(context).size.height * 0.23,
       child: TimelineTile(
         isFirst: isFirst,
         isLast: isLast,
