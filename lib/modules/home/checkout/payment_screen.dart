@@ -52,9 +52,24 @@ class PaymentScreen extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.025,
             ),
-            Text(
-              "${CartCubit.get(context).getCartModel!.data!.total.toString()} EGP",
-              style: Theme.of(context).textTheme.bodyLarge,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  CartCubit.get(context).getCartModel!.data!.total.toString(),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "EGP",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: prussianBlue.shade300),
+                )
+              ],
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
