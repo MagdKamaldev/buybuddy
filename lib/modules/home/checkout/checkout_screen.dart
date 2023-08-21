@@ -24,14 +24,35 @@ class CheckoutScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 42),
         child: ListView(
           children: [
+            MyTimeLineTile(
+              isFirst: true,
+              isLast: false,
+              isPast: true,
+              eventCard: Column(
+                children: [
+                  Text(
+                    "Confirm phone",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: ivory),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    child: Lottie.asset("assets/animations/phone.json"),
+                  ),
+                ],
+              ),
+            ),
             GestureDetector(
               onTap: () {
                 navigateTo(context, SetLocationScreen());
               },
               child: MyTimeLineTile(
-                isFirst: true,
+                isFirst: false,
                 isLast: false,
-                isPast: true,
+                isPast: false,
                 eventCard: Column(
                   children: [
                     Text(
@@ -56,8 +77,8 @@ class CheckoutScreen extends StatelessWidget {
               },
               child: MyTimeLineTile(
                 isFirst: false,
-                isLast: false,
-                isPast: true,
+                isLast: true,
+                isPast: false,
                 eventCard: Column(
                   children: [
                     Text(
@@ -74,27 +95,6 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-            ),
-            MyTimeLineTile(
-              isFirst: false,
-              isLast: true,
-              isPast: false,
-              eventCard: Column(
-                children: [
-                  Text(
-                    "Confirm phone",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(color: ivory),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: MediaQuery.of(context).size.height * 0.08,
-                    child: Lottie.asset("assets/animations/phone.json"),
-                  ),
-                ],
               ),
             ),
             SizedBox(
