@@ -50,7 +50,7 @@ class PaymentCubit extends Cubit<PaymentStates> {
           "${AppCubit.get(context).userModel!.data!.id}${_latestMerchantOrderId + 2}",
     }).then((value) {
       PayMobConst.paymentOrderId = value.data["id"].toString();
-      print("payment oder id : ${PayMobConst.paymentOrderId}");
+      //print("payment oder id : ${PayMobConst.paymentOrderId}");
       _latestMerchantOrderId++;
       CacheHelper.saveData(
           key: "paymentOrderId", value: _latestMerchantOrderId);
