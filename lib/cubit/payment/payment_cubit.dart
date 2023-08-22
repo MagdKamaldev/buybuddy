@@ -1,19 +1,25 @@
-import 'package:bloc/bloc.dart';
+import 'package:buybuddy/cubit/app/app_cubit.dart';
+import 'package:buybuddy/shared/networks/cache_helper.dart';
 import 'package:buybuddy/shared/networks/payment_constants.dart';
 import 'package:buybuddy/shared/networks/payment_dio_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 part 'payment_states.dart';
 
-class PaymentCubitCubit extends Cubit<PaymentStates> {
-  PaymentCubitCubit() : super(PaymentCubitInitial());
+class PaymentCubit extends Cubit<PaymentStates> {
+  PaymentCubit() : super(PaymentCubitInitial()) {
+    init();
+  }
+
+  static PaymentCubit get(context) => BlocProvider.of(context);
 
   Future<void> getAuthToken() async {
     emit(PaymentAuthLoadingState());
     PaymentDioHelper.postData(url: PayMobConst.getAuthToken, data: {
-      "Api_key": PayMobConst.paymentApiKey,
+      "api_key": PayMobConst.paymentApiKey,
     }).then((value) {
       PayMobConst.paymentAuthToken = value.data["token"];
-      print("token ${PayMobConst.paymentAuthToken})");
+      print("token ${PayMobConst.paymentAuthToken}");
       emit(PaymentAuthSuccessState());
     }).catchError((error) {
       print(error.toString());
@@ -21,26 +27,35 @@ class PaymentCubitCubit extends Cubit<PaymentStates> {
     });
   }
 
+  late int _latestMerchantOrderId;
+  void init() async {
+    _latestMerchantOrderId =
+        await CacheHelper.getData(key: "paymentOrderId") ?? 3;
+  }
+
   Future getOrderRegisterationId({
     required String name,
     required String email,
     required String phone,
-    required String price,
+    required num price,
+    required BuildContext context,
   }) async {
     emit(GetOrderRegisterationIdLoadingState());
-    PaymentDioHelper.postData(url: PayMobConst.paymobBaseUrl, data: {
+    PaymentDioHelper.postData(url: PayMobConst.getOrderId, data: {
       "auth_token": PayMobConst.paymentAuthToken,
       "delivery_needed": "false",
       "amount_cents": price,
       "currency": "EGP",
-      "merchant_order_id": 5,
+      "merchant_order_id":
+          "${AppCubit.get(context).userModel!.data!.id}${_latestMerchantOrderId + 2}",
     }).then((value) {
-      PayMobConst.paymentOrderId = value.data["id"];
+      PayMobConst.paymentOrderId = value.data["id"].toString();
+      print("payment oder id : ${PayMobConst.paymentOrderId}");
+      _latestMerchantOrderId++;
+      CacheHelper.saveData(
+          key: "paymentOrderId", value: _latestMerchantOrderId);
       getPaymentRequest(name: name, email: email, phone: phone, price: price);
       emit(GetOrderRegisterationIdSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetOrderRegisterationIdErrorState());
     });
   }
 
@@ -48,7 +63,7 @@ class PaymentCubitCubit extends Cubit<PaymentStates> {
     required String name,
     required String email,
     required String phone,
-    required String price,
+    required num price,
   }) async {
     emit(GetPaymentRequestLoadingState());
     PaymentDioHelper.postData(url: PayMobConst.getPaymentId, data: {
@@ -76,6 +91,7 @@ class PaymentCubitCubit extends Cubit<PaymentStates> {
       "lock_order_when_paid": "false"
     }).then((value) {
       PayMobConst.finalToken = value.data["token"];
+      print("final token  ${PayMobConst.finalToken}");
       emit(GetPaymentRequestSuccessState());
     }).catchError((error) {
       print(error.toString());

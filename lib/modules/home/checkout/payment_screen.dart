@@ -1,4 +1,7 @@
+import 'package:buybuddy/cubit/app/app_cubit.dart';
 import 'package:buybuddy/cubit/cart/cart_cubit.dart';
+import 'package:buybuddy/cubit/payment/payment_cubit.dart';
+import 'package:buybuddy/modules/home/checkout/card_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../../shared/components/components.dart';
@@ -77,7 +80,19 @@ class PaymentScreen extends StatelessWidget {
             SizedBox(
               height: 70,
               child: GestureDetector(
-                onTap: () => showCardSheet(context: context),
+                onTap: () {
+                  PaymentCubit.get(context).getAuthToken().then((value) {
+                    PaymentCubit.get(context).getOrderRegisterationId(
+                        name: AppCubit.get(context).userModel!.data!.name!,
+                        email: AppCubit.get(context).userModel!.data!.email!,
+                        phone: AppCubit.get(context).userModel!.data!.phone!,
+                        price:
+                            CartCubit.get(context).getCartModel!.data!.total!,
+                        context: context);
+
+                    navigateTo(context, CardScreen());
+                  });
+                },
                 child: Card(
                   color: ivory,
                   child: Padding(

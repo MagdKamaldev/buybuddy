@@ -6,6 +6,7 @@ import 'package:buybuddy/modules/onboarding/on_borading.dart';
 import 'package:buybuddy/modules/onboarding/sign_in.dart';
 import 'package:buybuddy/shared/networks/cache_helper.dart';
 import 'package:buybuddy/shared/networks/dio_helper.dart';
+import 'package:buybuddy/shared/networks/payment_dio_helper.dart';
 import 'package:buybuddy/shared/styles/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,12 +15,14 @@ import 'cubit/app/app_states.dart';
 import 'cubit/cart/cart_cubit.dart';
 import 'cubit/favourites/favourites_cubit.dart';
 import 'cubit/login/login_cubit.dart';
+import 'cubit/payment/payment_cubit.dart';
 
 String? token = "";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
+  PaymentDioHelper.init();
   await CacheHelper.init();
   Widget? widget;
   token = CacheHelper.getData(key: "token");
@@ -65,6 +68,9 @@ class MyApp extends StatelessWidget {
         }),
         BlocProvider(create: (context) {
           return CheckOutCubit()..requestPermission();
+        }),
+        BlocProvider(create: (context) {
+          return PaymentCubit()..getAuthToken();
         }),
       ],
       child: BlocConsumer<AppCubit, AppStates>(
