@@ -4,7 +4,6 @@ import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../modules/onboarding/sign_in.dart';
 
 Widget defaultButton({

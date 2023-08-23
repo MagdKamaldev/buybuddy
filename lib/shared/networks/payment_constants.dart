@@ -12,7 +12,7 @@ class PayMobConst {
   static const String integrationIdCard = "3414863";
 
   static String visaUrl =
-      "https://accept.paymob.com/api/acceptance/iframes/734400?payment_token=$finalToken";
+      "https://accept.paymob.com/api/acceptance/iframes/734399?payment_token=$finalToken";
   static String paymentAuthToken = "";
   static String paymentOrderId = "";
   static String finalToken = "";
