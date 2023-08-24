@@ -35,7 +35,7 @@ class SetLocationScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [                 
+                children: [
                   Text(
                     "Set location on map",
                     style: Theme.of(context).textTheme.bodyLarge,
@@ -171,8 +171,7 @@ class SetLocationScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.35,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                          color: Colors.black, width: 1), 
+                      border: Border.all(color: Colors.black, width: 1),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),

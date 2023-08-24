@@ -1,4 +1,6 @@
 import 'package:buybuddy/cubit/app/app_cubit.dart';
+import 'package:buybuddy/modules/home/checkout/card_screen.dart';
+import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/networks/cache_helper.dart';
 import 'package:buybuddy/shared/networks/payment_constants.dart';
 import 'package:buybuddy/shared/networks/payment_dio_helper.dart';
@@ -28,6 +30,7 @@ class PaymentCubit extends Cubit<PaymentStates> {
   }
 
   late int _latestMerchantOrderId;
+
   void init() async {
     _latestMerchantOrderId =
         await CacheHelper.getData(key: "paymentOrderId") ?? 3;
@@ -54,7 +57,12 @@ class PaymentCubit extends Cubit<PaymentStates> {
       _latestMerchantOrderId++;
       CacheHelper.saveData(
           key: "paymentOrderId", value: _latestMerchantOrderId);
-      getPaymentRequest(name: name, email: email, phone: phone, price: price);
+      getPaymentRequest(
+          name: name,
+          email: email,
+          phone: phone,
+          price: price,
+          context: context);
       emit(GetOrderRegisterationIdSuccessState());
     });
   }
@@ -64,6 +72,7 @@ class PaymentCubit extends Cubit<PaymentStates> {
     required String email,
     required String phone,
     required num price,
+    BuildContext? context,
   }) async {
     emit(GetPaymentRequestLoadingState());
     PaymentDioHelper.postData(url: PayMobConst.getPaymentId, data: {
@@ -91,6 +100,7 @@ class PaymentCubit extends Cubit<PaymentStates> {
       "lock_order_when_paid": "false"
     }).then((value) {
       PayMobConst.finalToken = value.data["token"];
+      navigateTo(context, const CardScreen());
       print("final token  ${PayMobConst.finalToken}");
       emit(GetPaymentRequestSuccessState());
     }).catchError((error) {

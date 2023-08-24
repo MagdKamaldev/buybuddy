@@ -60,15 +60,15 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
     //print("=================== ${placemarks[0].postalCode}");
   }
 
-  double mesuredistanceinkm({
-    required startLat,
-    required startLong,
-    required endLat,
-    required endLong,
-  }) {
-    return Geolocator.distanceBetween(startLat, startLong, endLat, endLong) /
-        1000;
-  }
+  // double mesuredistanceinkm({
+  //   required startLat,
+  //   required startLong,
+  //   required endLat,
+  //   required endLong,
+  // }) {
+  //   return Geolocator.distanceBetween(startLat, startLong, endLat, endLong) /
+  //       1000;
+  // }
 
   Position? orderLatLong;
 

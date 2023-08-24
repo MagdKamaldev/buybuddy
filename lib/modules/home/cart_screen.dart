@@ -9,7 +9,12 @@ import '../../cubit/cart/cart_states.dart';
 import '../../shared/components/components.dart';
 import '../../shared/styles/colors.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CartCubit, CartStates>(
