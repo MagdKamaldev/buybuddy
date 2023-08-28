@@ -7,9 +7,11 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart';
 import '../../../cubit/map/checkout_states.dart';
 
 class SetLocationScreen extends StatelessWidget {
+  var formKey = GlobalKey<FormState>();
   var buildingController = TextEditingController();
   var apartmentController = TextEditingController();
   var floorController = TextEditingController();
@@ -17,6 +19,10 @@ class SetLocationScreen extends StatelessWidget {
   var additionalDirectionsController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    var cubit = CheckOutCubit.get(context);
+    var size = MediaQuery.of(context).size;
+    var textTheme = Theme.of(context).textTheme;
+
     return BlocConsumer<CheckOutCubit, CheckOutStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -31,11 +37,14 @@ class SetLocationScreen extends StatelessWidget {
             centerTitle: true,
           ),
           body: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.only(left: 20, right: 20),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Text(
                     "Set location on map",
                     style: Theme.of(context).textTheme.bodyLarge,
@@ -97,33 +106,63 @@ class SetLocationScreen extends StatelessWidget {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(16),
-                                    child: GoogleMap(
-                                      mapType: MapType.normal,
-                                      zoomControlsEnabled: false,
-                                      zoomGesturesEnabled: true,
-                                      initialCameraPosition:
+                                    child: ConditionalBuilder(
+                                      condition: cubit.orderLatLong != null,
+                                      builder: (context) => Container(
+                                        color: ivory,
+                                        child: Center(
+                                            child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: size.width * 0.2,
+                                              height: size.height * 0.07,
+                                              child: Lottie.asset(
+                                                  "assets/animations/done.json"),
+                                            ),
+                                            SizedBox(
+                                              height: size.height * 0.03,
+                                            ),
+                                            Text(
+                                              "Location Set",
+                                              style: textTheme.titleMedium!
+                                                  .copyWith(color: indigoDye),
+                                            ),
+                                            SizedBox(
+                                              height: size.height * 0.06,
+                                            ),
+                                          ],
+                                        )),
+                                      ),
+                                      fallback: (context) => GoogleMap(
+                                        mapType: MapType.normal,
+                                        zoomControlsEnabled: false,
+                                        zoomGesturesEnabled: true,
+                                        initialCameraPosition: CheckOutCubit
+                                                        .get(context)
+                                                    .orderLatLong ==
+                                                null
+                                            ? CheckOutCubit.get(context)
+                                                .myPosition
+                                            : CameraPosition(
+                                                zoom: 15.5,
+                                                target: LatLng(
+                                                    CheckOutCubit.get(context)
+                                                        .orderLatLong!
+                                                        .latitude,
+                                                    CheckOutCubit.get(context)
+                                                        .orderLatLong!
+                                                        .longitude),
+                                              ),
+                                        onMapCreated:
+                                            (GoogleMapController controller) {
                                           CheckOutCubit.get(context)
-                                                      .orderLatLong ==
-                                                  null
-                                              ? CheckOutCubit.get(context)
-                                                  .myPosition
-                                              : CameraPosition(
-                                                  zoom: 15.5,
-                                                  target: LatLng(
-                                                      CheckOutCubit.get(context)
-                                                          .orderLatLong!
-                                                          .latitude,
-                                                      CheckOutCubit.get(context)
-                                                          .orderLatLong!
-                                                          .longitude),
-                                                ),
-                                      onMapCreated:
-                                          (GoogleMapController controller) {
-                                        CheckOutCubit.get(context)
-                                            .setMarkerCustomImage(context);
-                                      },
-                                      markers:
-                                          CheckOutCubit.get(context).myMarkers,
+                                              .setMarkerCustomImage(context);
+                                        },
+                                        markers: CheckOutCubit.get(context)
+                                            .myMarkers,
+                                      ),
                                     ),
                                   ),
                                   Align(
@@ -132,7 +171,9 @@ class SetLocationScreen extends StatelessWidget {
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(16),
-                                          color: ivory.withOpacity(0.8)),
+                                          color: ivory.withOpacity(0.8),
+                                          border: Border.all(
+                                              width: 2, color: ashGrey)),
                                       width: double.infinity,
                                       padding: const EdgeInsets.all(16),
                                       child: Row(
@@ -166,62 +207,90 @@ class SetLocationScreen extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.01,
                   ),
-                  Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: Colors.black, width: 1),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: [
-                          defaultFormField(
-                              controller: streetController,
-                              type: TextInputType.streetAddress,
-                              onSubmit: () {},
-                              validate: () {},
-                              label: "Street",
-                              prefix: Icons.directions,
-                              context: context),
-                          const Spacer(),
-                          defaultFormField(
-                            controller: buildingController,
-                            type: TextInputType.streetAddress,
-                            onSubmit: () {},
-                            validate: () {},
-                            label: "Building name / number",
-                            prefix: Icons.apartment,
-                            context: context,
-                          ),
-                          const Spacer(),
-                          defaultFormField(
-                              controller: floorController,
-                              type: TextInputType.streetAddress,
-                              onSubmit: () {},
-                              validate: () {},
-                              label: "floor",
-                              prefix: Icons.layers,
-                              context: context),
-                          const Spacer(),
-                          defaultFormField(
-                              controller: apartmentController,
-                              type: TextInputType.streetAddress,
-                              onSubmit: () {},
-                              validate: () {},
-                              label: "Apartment number",
-                              prefix: Icons.house_rounded,
-                              context: context),
-                        ],
+                  SingleChildScrollView(
+                    child: Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.46,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                    ), // Replace with your desired child widget
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              defaultFormField(
+                                  controller: streetController,
+                                  type: TextInputType.streetAddress,
+                                  onSubmit: () {},
+                                  validate: (String value) {
+                                    if (value.isEmpty) {
+                                      return "Street must not be empty";
+                                    }
+                                  },
+                                  label: "Street",
+                                  prefix: Icons.directions,
+                                  context: context),
+                              const Spacer(),
+                              defaultFormField(
+                                controller: buildingController,
+                                type: TextInputType.streetAddress,
+                                onSubmit: () {},
+                                validate: (String value) {
+                                  if (value.isEmpty) {
+                                    return "Building name / number must not be empty";
+                                  }
+                                },
+                                label: "Building name / number",
+                                prefix: Icons.apartment,
+                                context: context,
+                              ),
+                              const Spacer(),
+                              defaultFormField(
+                                  controller: floorController,
+                                  type: TextInputType.streetAddress,
+                                  onSubmit: () {},
+                                  validate: (String value) {
+                                    if (value.isEmpty) {
+                                      return "Floor must not be empty";
+                                    }
+                                  },
+                                  label: "floor",
+                                  prefix: Icons.layers,
+                                  context: context),
+                              const Spacer(),
+                              defaultFormField(
+                                  controller: apartmentController,
+                                  type: TextInputType.streetAddress,
+                                  onSubmit: () {},
+                                  validate: (String value) {
+                                    if (value.isEmpty) {
+                                      return "Apartment number must not be empty";
+                                    }
+                                  },
+                                  label: "Apartment number",
+                                  prefix: Icons.house_rounded,
+                                  context: context),
+                            ],
+                          ),
+                        ),
+                      ), // Replace with your desired child widget
+                    ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
                   ),
                   defaultButton(
-                      function: () {}, context: context, text: "Confirm")
+                      function: () {
+                        if (formKey.currentState!.validate() &&
+                            CheckOutCubit.get(context).orderLatLong != null) {}
+                      },
+                      context: context,
+                      text: "Confirm"),
+                  const SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),

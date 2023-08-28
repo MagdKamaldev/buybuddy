@@ -33,7 +33,7 @@ class PaymentCubit extends Cubit<PaymentStates> {
 
   void init() async {
     _latestMerchantOrderId =
-        await CacheHelper.getData(key: "paymentOrderId") ?? 3;
+        await CacheHelper.getData(key: "paymentOrderId") ?? 10;
   }
 
   Future getOrderRegisterationId({
@@ -50,7 +50,7 @@ class PaymentCubit extends Cubit<PaymentStates> {
       "amount_cents": price,
       "currency": "EGP",
       "merchant_order_id":
-          "${AppCubit.get(context).userModel!.data!.id}${_latestMerchantOrderId + 2}",
+          "${AppCubit.get(context).userModel!.data!.id} ${_latestMerchantOrderId + 1} ${AppCubit.get(context).userModel!.data!.name}",
     }).then((value) {
       PayMobConst.paymentOrderId = value.data["id"].toString();
       //print("payment oder id : ${PayMobConst.paymentOrderId}");
