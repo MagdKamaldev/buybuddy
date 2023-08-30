@@ -54,6 +54,7 @@ dependencies:
   geocoding: ^2.1.0
   timeline_tile: ^2.0.0
   webview_flutter: ^3.0.4
+  firebase_core: ^2.15.1
 
 dev_dependencies:
   flutter_test:
