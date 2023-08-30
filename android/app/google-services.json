@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "836917147552",
+    "project_id": "buybuddy-83f35",
+    "storage_bucket": "buybuddy-83f35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836917147552:android:5f98d8b44e3229f37496c5",
+        "android_client_info": {
+          "package_name": "com.example.buybuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836917147552-ou0inojaril5c2vdgh37u2k3klecpt4s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJoEwsjQCkx3hZdtjA1xLvbmGiEk-ikTk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836917147552-ou0inojaril5c2vdgh37u2k3klecpt4s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
