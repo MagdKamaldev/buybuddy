@@ -1,5 +1,6 @@
 import 'package:buybuddy/modules/home/checkout/location_screen.dart';
 import 'package:buybuddy/modules/home/checkout/payment_screen.dart';
+import 'package:buybuddy/modules/home/checkout/phone_entrance_screen.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/components/timeline_tile.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
@@ -24,25 +25,30 @@ class CheckoutScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 42),
         child: ListView(
           children: [
-            MyTimeLineTile(
-              isFirst: true,
-              isLast: false,
-              isPast: true,
-              eventCard: Column(
-                children: [
-                  Text(
-                    "Confirm phone",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(color: ivory),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: MediaQuery.of(context).size.height * 0.08,
-                    child: Lottie.asset("assets/animations/phone.json"),
-                  ),
-                ],
+            GestureDetector(
+              onTap: () {
+                navigateTo(context, PhoneEntrance());
+              },
+              child: MyTimeLineTile(
+                isFirst: true,
+                isLast: false,
+                isPast: true,
+                eventCard: Column(
+                  children: [
+                    Text(
+                      "Confirm phone",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(color: ivory),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      child: Lottie.asset("assets/animations/phone.json"),
+                    ),
+                  ],
+                ),
               ),
             ),
             GestureDetector(

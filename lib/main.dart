@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:buybuddy/cubit/map/checkout_cubit.dart';
 import 'package:buybuddy/cubit/signup/sign_up_cubit.dart';
+import 'package:buybuddy/firebase_options.dart';
 import 'package:buybuddy/modules/home/home_layout.dart';
 import 'package:buybuddy/modules/onboarding/on_borading.dart';
 import 'package:buybuddy/modules/onboarding/sign_in.dart';
@@ -8,6 +9,7 @@ import 'package:buybuddy/shared/networks/cache_helper.dart';
 import 'package:buybuddy/shared/networks/dio_helper.dart';
 import 'package:buybuddy/shared/networks/payment_dio_helper.dart';
 import 'package:buybuddy/shared/styles/themes.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'cubit/app/app_cubit.dart';
@@ -24,6 +26,7 @@ void main() async {
   DioHelper.init();
   PaymentDioHelper.init();
   await CacheHelper.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   Widget? widget;
   token = CacheHelper.getData(key: "token");
   String? start = CacheHelper.getData(key: "start");
