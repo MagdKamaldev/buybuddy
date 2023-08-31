@@ -80,8 +80,8 @@ class PhoneEntrance extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    height: size.height * 0.08,
-                    width: size.width * 0.18,
+                    height: size.height * 0.06,
+                    width: size.width * 0.14,
                     decoration: BoxDecoration(
                       border: Border.all(color: prussianBlue, width: 1),
                       borderRadius: BorderRadius.circular(8),
@@ -105,8 +105,8 @@ class PhoneEntrance extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: size.height * 0.08,
-                    width: size.width * 0.18,
+                    height: size.height * 0.06,
+                    width: size.width * 0.14,
                     decoration: BoxDecoration(
                       border: Border.all(color: prussianBlue, width: 1),
                       borderRadius: BorderRadius.circular(
@@ -131,8 +131,8 @@ class PhoneEntrance extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: size.height * 0.08,
-                    width: size.width * 0.18,
+                    height: size.height * 0.06,
+                    width: size.width * 0.14,
                     decoration: BoxDecoration(
                       border: Border.all(color: prussianBlue, width: 1),
                       borderRadius: BorderRadius.circular(
@@ -157,8 +157,8 @@ class PhoneEntrance extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.08,
-                    width: MediaQuery.of(context).size.width * 0.18,
+                    height: size.height * 0.06,
+                    width: size.width * 0.14,
                     decoration: BoxDecoration(
                       border: Border.all(color: prussianBlue, width: 1),
                       borderRadius: BorderRadius.circular(
@@ -173,7 +173,59 @@ class PhoneEntrance extends StatelessWidget {
                       },
                       style: Theme.of(context).textTheme.bodyLarge,
                       textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number, 
+                      keyboardType: TextInputType.number,
+                      maxLength: 1,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        counterText: "",
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: size.height * 0.06,
+                    width: size.width * 0.14,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: prussianBlue, width: 1),
+                      borderRadius: BorderRadius.circular(
+                          8), // Optional: Add border radius
+                    ),
+                    child: TextFormField(
+                      onChanged: (value) {
+                        if (value.length == 1) {
+                          FocusScope.of(context).nextFocus();
+                          code = code + value;
+                        }
+                      },
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      maxLength: 1,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        counterText: "",
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: size.height * 0.06,
+                    width: size.width * 0.14,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: prussianBlue, width: 1),
+                      borderRadius: BorderRadius.circular(
+                          8), // Optional: Add border radius
+                    ),
+                    child: TextFormField(
+                      onChanged: (value) {
+                        if (value.length == 1) {
+                          FocusScope.of(context).nextFocus();
+                          code = code + value;
+                        }
+                      },
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
                       maxLength: 1,
                       autofocus: true,
                       decoration: const InputDecoration(
