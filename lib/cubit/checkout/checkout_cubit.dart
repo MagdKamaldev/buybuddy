@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
@@ -16,13 +17,13 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
 
   bool? servicesEnabled;
   LocationPermission? permission;
-  
+
   Future requestPermission() async {
     emit(ResquestPermissionLoadingState());
 
     servicesEnabled = await Geolocator.isLocationServiceEnabled();
     permission = await Geolocator.checkPermission();
-   
+
     permission = await Geolocator.requestPermission().then((value) {
       if (permission != LocationPermission.denied) {
         getLatLong();
@@ -109,5 +110,31 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
       ),
     ));
     emit(SetMarkerSuccessState());
+  }
+
+  void verifyNumber({
+    required String number,
+    required String smsCode,
+    required BuildContext context,
+  }) async {
+    emit(VerifyNumberLoadingState());
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: number,
+      verificationCompleted: (PhoneAuthCredential credential) {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        emit(VerifyNumberSuccessState());
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        showCustomSnackBar(context, e.message.toString(), Colors.red);
+        emit(VerifyNumberErrorState());
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+            verificationId: verificationId, smsCode: smsCode);
+        emit(CodeSentState());
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
   }
 }

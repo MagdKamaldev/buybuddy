@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
-
 import 'package:buybuddy/cubit/app/app_cubit.dart';
-import 'package:buybuddy/cubit/map/checkout_cubit.dart';
-import 'package:buybuddy/cubit/map/checkout_states.dart';
+import 'package:buybuddy/cubit/checkout/checkout_cubit.dart';
+import 'package:buybuddy/cubit/checkout/checkout_states.dart';
+import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,17 +13,13 @@ class PhoneEntrance extends StatelessWidget {
 
   FocusNode focusNode = FocusNode();
   var phoneNumberController = TextEditingController();
+  String code = "";
   @override
   Widget build(BuildContext context) {
     TextTheme theme = Theme.of(context).textTheme;
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<CheckOutCubit, CheckOutStates>(
-      listener: (context, state) {
-        if (phoneNumberController.text.isEmpty) {
-          phoneNumberController.text =
-              AppCubit.get(context).userModel!.data!.phone!;
-        }
-      },
+      listener: (context, state) {},
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           toolbarHeight: 80,
@@ -42,8 +38,13 @@ class PhoneEntrance extends StatelessWidget {
                 style: theme.bodyLarge!.copyWith(fontSize: 17),
               ),
               SizedBox(
-                height: size.height * 0.2,
+                height: size.height * 0.04,
               ),
+              SizedBox(
+                  width: size.width * 0.3,
+                  height: size.height * 0.15,
+                  child: Image.asset("assets/images/unlock.png")),
+              const Spacer(),
               IntlPhoneField(
                 focusNode: focusNode,
                 style: theme.titleMedium!.copyWith(fontSize: 18),
@@ -59,8 +60,142 @@ class PhoneEntrance extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                controller: phoneNumberController,
+                onChanged: (phone) {
+                  phoneNumberController.text = phone.completeNumber;
+                },
+                initialValue: AppCubit.get(context).userModel!.data!.phone!,
               ),
+              const Spacer(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Confirm Code",
+                  style: theme.bodyLarge,
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: size.height * 0.08,
+                    width: size.width * 0.18,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: prussianBlue, width: 1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextFormField(
+                      onChanged: (value) {
+                        if (value.length == 1) {
+                          FocusScope.of(context).nextFocus();
+                          code = code + value;
+                        }
+                      },
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      maxLength: 1,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        counterText: "",
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: size.height * 0.08,
+                    width: size.width * 0.18,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: prussianBlue, width: 1),
+                      borderRadius: BorderRadius.circular(
+                          8), // Optional: Add border radius
+                    ),
+                    child: TextFormField(
+                      onChanged: (value) {
+                        if (value.length == 1) {
+                          FocusScope.of(context).nextFocus();
+                          code = code + value;
+                        }
+                      },
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      maxLength: 1,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        counterText: "",
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: size.height * 0.08,
+                    width: size.width * 0.18,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: prussianBlue, width: 1),
+                      borderRadius: BorderRadius.circular(
+                          8), // Optional: Add border radius
+                    ),
+                    child: TextFormField(
+                      onChanged: (value) {
+                        if (value.length == 1) {
+                          FocusScope.of(context).nextFocus();
+                          code = code + value;
+                        }
+                      },
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      maxLength: 1,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        counterText: "",
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    width: MediaQuery.of(context).size.width * 0.18,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: prussianBlue, width: 1),
+                      borderRadius: BorderRadius.circular(
+                          8), // Optional: Add border radius
+                    ),
+                    child: TextFormField(
+                      onChanged: (value) {
+                        if (value.length == 1) {
+                          FocusScope.of(context).nextFocus();
+                          code = code + value;
+                        }
+                      },
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number, 
+                      maxLength: 1,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        counterText: "",
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const Spacer(),
+              defaultButton(
+                  function: () {
+                    CheckOutCubit.get(context).verifyNumber(
+                        number: phoneNumberController.text,
+                        context: context,
+                        smsCode: code);
+                  },
+                  context: context,
+                  text:
+                      state is CodeSentState ? "Confirm Code" : "Confirm Phone",
+                  height: size.height * 0.07),
             ],
           ),
         ),

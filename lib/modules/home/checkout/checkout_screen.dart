@@ -5,7 +5,6 @@ import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/components/timeline_tile.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});
@@ -45,7 +44,7 @@ class CheckoutScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.2,
                       height: MediaQuery.of(context).size.height * 0.08,
-                      child: Lottie.asset("assets/animations/phone.json"),
+                      child: Image.asset("assets/images/smartphone.png"),
                     ),
                   ],
                 ),
@@ -71,7 +70,7 @@ class CheckoutScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.2,
                       height: MediaQuery.of(context).size.height * 0.08,
-                      child: Lottie.asset("assets/animations/adress.json"),
+                      child: Image.asset("assets/images/map.png"),
                     ),
                   ],
                 ),
@@ -97,7 +96,7 @@ class CheckoutScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.2,
                       height: MediaQuery.of(context).size.height * 0.08,
-                      child: Lottie.asset("assets/animations/payment.json"),
+                      child: Image.asset("assets/images/credit-card.png"),
                     ),
                   ],
                 ),

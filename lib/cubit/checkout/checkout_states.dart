@@ -21,3 +21,11 @@ class SetMarkerLoadingState extends CheckOutStates {}
 class SetMarkerSuccessState extends CheckOutStates {}
 
 class SetOrderLoactionState extends CheckOutStates {}
+
+class VerifyNumberLoadingState extends CheckOutStates{}
+
+class VerifyNumberSuccessState extends CheckOutStates{}
+
+class CodeSentState extends CheckOutStates{}
+
+class VerifyNumberErrorState extends CheckOutStates{}

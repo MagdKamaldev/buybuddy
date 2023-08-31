@@ -3,7 +3,6 @@ import 'package:buybuddy/cubit/cart/cart_cubit.dart';
 import 'package:buybuddy/cubit/payment/payment_cubit.dart';
 import 'package:buybuddy/modules/home/checkout/card_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import '../../../shared/components/components.dart';
 import '../../../shared/styles/colors.dart';
 
@@ -43,7 +42,7 @@ class PaymentScreen extends StatelessWidget {
             SizedBox(
                 width: MediaQuery.of(context).size.width * 0.5,
                 height: MediaQuery.of(context).size.height * 0.2,
-                child: Lottie.asset("assets/animations/payment_title.json")),
+                child: Image.asset("assets/images/smartphone.png")),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.025,
             ),

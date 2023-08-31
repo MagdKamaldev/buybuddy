@@ -1,5 +1,5 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable
-import 'package:buybuddy/cubit/map/checkout_cubit.dart';
+import 'package:buybuddy/cubit/checkout/checkout_cubit.dart';
 import 'package:buybuddy/modules/home/checkout/map_screen.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
-import '../../../cubit/map/checkout_states.dart';
+import '../../../cubit/checkout/checkout_states.dart';
 
 class SetLocationScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();

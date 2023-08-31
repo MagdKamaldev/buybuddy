@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:buybuddy/cubit/map/checkout_cubit.dart';
+import 'package:buybuddy/cubit/checkout/checkout_cubit.dart';
 import 'package:buybuddy/cubit/signup/sign_up_cubit.dart';
 import 'package:buybuddy/firebase_options.dart';
 import 'package:buybuddy/modules/home/home_layout.dart';
