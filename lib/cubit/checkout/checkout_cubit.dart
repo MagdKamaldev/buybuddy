@@ -126,7 +126,7 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
         emit(VerifyNumberSuccessState());
       },
       verificationFailed: (FirebaseAuthException e) {
-        showCustomSnackBar(context, e.message.toString(), Colors.red);
+        showCustomSnackBar(context, e.message.toString(), Colors.red,);
         emit(VerifyNumberErrorState());
       },
       codeSent: (String verificationId, int? resendToken) {
@@ -134,7 +134,9 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
         //     verificationId: verificationId, smsCode: smsCode);
         emit(CodeSentState());
       },
-      codeAutoRetrievalTimeout: (String verificationId) {},
+      codeAutoRetrievalTimeout: (String verificationId) {
+
+      },
     );
   }
 }

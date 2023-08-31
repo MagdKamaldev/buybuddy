@@ -116,7 +116,7 @@ void showCustomSnackBar(
         ),
       ),
       backgroundColor: backgroundColor,
-      duration: Duration(seconds: 2),
+      duration: Duration(seconds: 3),
     ),
   );
 }

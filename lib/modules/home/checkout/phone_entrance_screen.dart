@@ -12,7 +12,7 @@ class PhoneEntrance extends StatelessWidget {
   PhoneEntrance({super.key});
 
   FocusNode focusNode = FocusNode();
-  var phoneNumberController = TextEditingController();
+  String phoneNumber = "";
   String code = "";
   @override
   Widget build(BuildContext context) {
@@ -61,8 +61,9 @@ class PhoneEntrance extends StatelessWidget {
                   ),
                 ),
                 onChanged: (phone) {
-                  phoneNumberController.text = phone.completeNumber;
+                  phoneNumber = phone.completeNumber;
                 },
+              
                 initialValue: AppCubit.get(context).userModel!.data!.phone!,
               ),
               const Spacer(),
@@ -240,9 +241,9 @@ class PhoneEntrance extends StatelessWidget {
               defaultButton(
                   function: () {
                     CheckOutCubit.get(context).verifyNumber(
-                        number: phoneNumberController.text,
+                        number: phoneNumber==""?AppCubit.get(context).userModel!.data!.phone!:phoneNumber,
                         context: context,
-                        smsCode: code);
+                        smsCode: code);  
                   },
                   context: context,
                   text:
