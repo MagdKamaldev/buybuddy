@@ -130,8 +130,8 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
         emit(VerifyNumberErrorState());
       },
       codeSent: (String verificationId, int? resendToken) {
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            verificationId: verificationId, smsCode: smsCode);
+        // PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        //     verificationId: verificationId, smsCode: smsCode);
         emit(CodeSentState());
       },
       codeAutoRetrievalTimeout: (String verificationId) {},

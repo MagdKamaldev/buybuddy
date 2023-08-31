@@ -5,6 +5,7 @@ import 'package:buybuddy/firebase_options.dart';
 import 'package:buybuddy/modules/home/home_layout.dart';
 import 'package:buybuddy/modules/onboarding/on_borading.dart';
 import 'package:buybuddy/modules/onboarding/sign_in.dart';
+import 'package:buybuddy/shared/components/bloc_observer.dart';
 import 'package:buybuddy/shared/networks/cache_helper.dart';
 import 'package:buybuddy/shared/networks/dio_helper.dart';
 import 'package:buybuddy/shared/networks/payment_dio_helper.dart';
@@ -26,7 +27,10 @@ void main() async {
   DioHelper.init();
   PaymentDioHelper.init();
   await CacheHelper.init();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  Bloc.observer = MyBlocObserver();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   Widget? widget;
   token = CacheHelper.getData(key: "token");
   String? start = CacheHelper.getData(key: "start");
