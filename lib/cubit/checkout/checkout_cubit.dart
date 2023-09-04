@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -112,31 +114,60 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
     emit(SetMarkerSuccessState());
   }
 
+  Duration duration = const Duration(seconds: 120);
+
   void verifyNumber({
     required String number,
-    required String smsCode,
     required BuildContext context,
   }) async {
     emit(VerifyNumberLoadingState());
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: number,
       verificationCompleted: (PhoneAuthCredential credential) {
-        Navigator.pop(context);
-        Navigator.pop(context);
         emit(VerifyNumberSuccessState());
       },
       verificationFailed: (FirebaseAuthException e) {
-        showCustomSnackBar(context, e.message.toString(), Colors.red,);
+        showCustomSnackBar(
+          context,
+          e.message.toString(),
+          Colors.red,
+        );
         emit(VerifyNumberErrorState());
       },
       codeSent: (String verificationId, int? resendToken) {
-        // PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        //     verificationId: verificationId, smsCode: smsCode);
+        startTimer();
         emit(CodeSentState());
       },
-      codeAutoRetrievalTimeout: (String verificationId) {
-
-      },
+      timeout: duration,
+      codeAutoRetrievalTimeout: (String verificationId) {},
     );
+  }
+
+  late Timer timer;
+  Duration remainingDuration = Duration.zero;
+
+  void startTimer() {
+    remainingDuration = duration;
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      remainingDuration -= const Duration(seconds: 1);
+      if (remainingDuration == const Duration(seconds: 0)) {
+        timer.cancel();
+      }
+      emit(TimerState());
+    });
+  }
+
+  void stopTimer() {
+    timer.cancel();
+  }
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  UserCredential? userCredential;
+  void confirmPhoneNumber(
+      {required String number, required String code}) async {
+    emit(VerifyCodeLoadingState());
+    ConfirmationResult confirmationResult =
+        await auth.signInWithPhoneNumber(number);
+    userCredential = await confirmationResult.confirm(code);
   }
 }

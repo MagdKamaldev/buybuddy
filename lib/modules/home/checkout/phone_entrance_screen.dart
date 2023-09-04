@@ -2,6 +2,7 @@
 import 'package:buybuddy/cubit/app/app_cubit.dart';
 import 'package:buybuddy/cubit/checkout/checkout_cubit.dart';
 import 'package:buybuddy/cubit/checkout/checkout_states.dart';
+import 'package:buybuddy/modules/home/checkout/confirm_code_screen.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class PhoneEntrance extends StatelessWidget {
 
   FocusNode focusNode = FocusNode();
   String phoneNumber = "";
-  String code = "";
+
   @override
   Widget build(BuildContext context) {
     TextTheme theme = Theme.of(context).textTheme;
@@ -63,191 +64,27 @@ class PhoneEntrance extends StatelessWidget {
                 onChanged: (phone) {
                   phoneNumber = phone.completeNumber;
                 },
-              
                 initialValue: AppCubit.get(context).userModel!.data!.phone!,
-              ),
-              const Spacer(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Confirm Code",
-                  style: theme.bodyLarge,
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.02,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: size.height * 0.06,
-                    width: size.width * 0.14,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: prussianBlue, width: 1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        if (value.length == 1) {
-                          FocusScope.of(context).nextFocus();
-                          code = code + value;
-                        }
-                      },
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        counterText: "",
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: size.height * 0.06,
-                    width: size.width * 0.14,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: prussianBlue, width: 1),
-                      borderRadius: BorderRadius.circular(
-                          8), // Optional: Add border radius
-                    ),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        if (value.length == 1) {
-                          FocusScope.of(context).nextFocus();
-                          code = code + value;
-                        }
-                      },
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        counterText: "",
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: size.height * 0.06,
-                    width: size.width * 0.14,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: prussianBlue, width: 1),
-                      borderRadius: BorderRadius.circular(
-                          8), // Optional: Add border radius
-                    ),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        if (value.length == 1) {
-                          FocusScope.of(context).nextFocus();
-                          code = code + value;
-                        }
-                      },
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        counterText: "",
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: size.height * 0.06,
-                    width: size.width * 0.14,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: prussianBlue, width: 1),
-                      borderRadius: BorderRadius.circular(
-                          8), // Optional: Add border radius
-                    ),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        if (value.length == 1) {
-                          FocusScope.of(context).nextFocus();
-                          code = code + value;
-                        }
-                      },
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        counterText: "",
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: size.height * 0.06,
-                    width: size.width * 0.14,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: prussianBlue, width: 1),
-                      borderRadius: BorderRadius.circular(
-                          8), // Optional: Add border radius
-                    ),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        if (value.length == 1) {
-                          FocusScope.of(context).nextFocus();
-                          code = code + value;
-                        }
-                      },
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        counterText: "",
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: size.height * 0.06,
-                    width: size.width * 0.14,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: prussianBlue, width: 1),
-                      borderRadius: BorderRadius.circular(
-                          8), // Optional: Add border radius
-                    ),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        if (value.length == 1) {
-                          FocusScope.of(context).nextFocus();
-                          code = code + value;
-                        }
-                      },
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        counterText: "",
-                      ),
-                    ),
-                  )
-                ],
               ),
               const Spacer(),
               defaultButton(
                   function: () {
-                    CheckOutCubit.get(context).verifyNumber(
-                        number: phoneNumber==""?AppCubit.get(context).userModel!.data!.phone!:phoneNumber,
-                        context: context,
-                        smsCode: code);  
+                    // CheckOutCubit.get(context).verifyNumber(
+                    //   number: phoneNumber == ""
+                    //       ? "+20${AppCubit.get(context).userModel!.data!.phone!}"
+                    //       : phoneNumber,
+                    //   context: context,
+                    // );
+                    navigateTo(
+                        context,
+                        ConfirmCode(
+                            number: phoneNumber == ""
+                                ? "+20${AppCubit.get(context).userModel!.data!.phone!}"
+                                : phoneNumber));
+                    CheckOutCubit.get(context).startTimer();
                   },
                   context: context,
-                  text:
-                      state is CodeSentState ? "Confirm Code" : "Confirm Phone",
+                  text: "Confirm Phone",
                   height: size.height * 0.07),
             ],
           ),

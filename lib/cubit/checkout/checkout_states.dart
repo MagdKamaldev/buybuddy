@@ -29,3 +29,11 @@ class VerifyNumberSuccessState extends CheckOutStates{}
 class CodeSentState extends CheckOutStates{}
 
 class VerifyNumberErrorState extends CheckOutStates{}
+
+class VerifyCodeLoadingState extends CheckOutStates{}
+
+class VerifyCodeSuccessState extends CheckOutStates{}
+
+class VerifyCodeErrorState extends CheckOutStates{}
+
+class TimerState extends CheckOutStates{}
