@@ -2,7 +2,6 @@
 import 'package:buybuddy/cubit/app/app_cubit.dart';
 import 'package:buybuddy/cubit/checkout/checkout_cubit.dart';
 import 'package:buybuddy/cubit/checkout/checkout_states.dart';
-import 'package:buybuddy/modules/home/checkout/confirm_code_screen.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -69,19 +68,13 @@ class PhoneEntrance extends StatelessWidget {
               const Spacer(),
               defaultButton(
                   function: () {
-                    // CheckOutCubit.get(context).verifyNumber(
-                    //   number: phoneNumber == ""
-                    //       ? "+20${AppCubit.get(context).userModel!.data!.phone!}"
-                    //       : phoneNumber,
-                    //   context: context,
-                    // );
-                    navigateTo(
-                        context,
-                        ConfirmCode(
-                            number: phoneNumber == ""
-                                ? "+20${AppCubit.get(context).userModel!.data!.phone!}"
-                                : phoneNumber));
-                    CheckOutCubit.get(context).startTimer();
+                    CheckOutCubit.get(context).verifyNumber(
+                      number: phoneNumber == ""
+                          ? "+20${AppCubit.get(context).userModel!.data!.phone!}"
+                          : phoneNumber,
+                      context: context,
+                    );
+                   
                   },
                   context: context,
                   text: "Confirm Phone",

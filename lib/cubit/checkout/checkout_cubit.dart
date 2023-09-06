@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:buybuddy/cubit/app/app_cubit.dart';
+import 'package:buybuddy/modules/home/checkout/confirm_code_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -116,6 +118,7 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
 
   Duration duration = const Duration(seconds: 120);
 
+  //I call this to get the number
   void verifyNumber({
     required String number,
     required BuildContext context,
@@ -136,6 +139,14 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
       },
       codeSent: (String verificationId, int? resendToken) {
         startTimer();
+
+        navigateTo(
+            context,
+            ConfirmCode(
+                number: number == ""
+                    ? "+20${AppCubit.get(context).userModel!.data!.phone!}"
+                    : number));
+
         emit(CodeSentState());
       },
       timeout: duration,
@@ -163,11 +174,25 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   UserCredential? userCredential;
-  void confirmPhoneNumber(
-      {required String number, required String code}) async {
+
+//I call this when I confirm the code
+  void confirmPhoneNumber({
+    required String number,
+    required String code,
+    required BuildContext context,
+  }) async {
     emit(VerifyCodeLoadingState());
-    ConfirmationResult confirmationResult =
-        await auth.signInWithPhoneNumber(number);
-    userCredential = await confirmationResult.confirm(code);
+    ConfirmationResult confirmationResult = await auth.signInWithPhoneNumber(
+      number,
+    );
+    userCredential = await confirmationResult.confirm(code).then((value) {
+      stopTimer();
+      Navigator.pop(context);
+      Navigator.pop(context);
+      emit(VerifyCodeSuccessState());
+    }).catchError((error) {
+      showCustomSnackBar(context, error.message.toString(), Colors.red);
+      emit(VerifyCodeErrorState());
+    });
   }
 }
