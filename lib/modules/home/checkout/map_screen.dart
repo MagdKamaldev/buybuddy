@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:buybuddy/cubit/checkout/checkout_cubit.dart';
 import 'package:buybuddy/cubit/checkout/checkout_states.dart';
 import 'package:buybuddy/shared/components/components.dart';

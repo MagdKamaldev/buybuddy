@@ -78,7 +78,7 @@ class CheckoutScreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                navigateTo(context, const PaymentScreen());
+                navigateTo(context, PaymentScreen());
               },
               child: MyTimeLineTile(
                 isFirst: false,

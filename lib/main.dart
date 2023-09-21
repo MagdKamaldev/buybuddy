@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
           return CheckOutCubit()..requestPermission();
         }),
         BlocProvider(create: (context) {
-          return PaymentCubit()..getAuthToken();
+          return PaymentCubit();
         }),
       ],
       child: BlocConsumer<AppCubit, AppStates>(

@@ -3,7 +3,6 @@ import 'package:buybuddy/cubit/checkout/checkout_cubit.dart';
 import 'package:buybuddy/cubit/checkout/checkout_states.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

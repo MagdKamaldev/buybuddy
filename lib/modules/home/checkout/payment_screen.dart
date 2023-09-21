@@ -1,16 +1,50 @@
-import 'package:buybuddy/cubit/app/app_cubit.dart';
+// ignore_for_file: must_be_immutable
 import 'package:buybuddy/cubit/cart/cart_cubit.dart';
-import 'package:buybuddy/cubit/payment/payment_cubit.dart';
-import 'package:buybuddy/modules/home/checkout/card_screen.dart';
+import 'package:buybuddy/models/payment_model.dart';
+import 'package:buybuddy/shared/components/components.dart';
 import 'package:flutter/material.dart';
-import '../../../shared/components/components.dart';
+import 'package:pay/pay.dart';
 import '../../../shared/styles/colors.dart';
 
-class PaymentScreen extends StatelessWidget {
-  const PaymentScreen({super.key});
+class PaymentScreen extends StatefulWidget {
+  PaymentScreen({super.key});
+
+  @override
+  State<PaymentScreen> createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+  List<PaymentItem> items = [];
+
+  @override
+  void initState() {
+    for (var item in CartCubit.get(context).getCartModel!.data!.cartItems!) {
+      items.add(
+        PaymentItem(
+            amount: item.product!.price.toString(),
+            label: item.product!.name.toString(),
+            status: PaymentItemStatus.final_price),
+      );
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    var googlePlayButton = GooglePayButton(
+      onPaymentResult: (result) =>
+          showCustomSnackBar(context, "Payment Successful", Colors.green),
+      paymentItems: items,
+      type: GooglePayButtonType.buy,
+      onError: (error) {
+        showCustomSnackBar(context, error.toString(), Colors.red);
+      },
+      height: MediaQuery.of(context).size.height * 0.07,
+      paymentConfiguration:
+          PaymentConfiguration.fromJsonString(defaultGooglePay),
+      width: double.infinity,
+      loadingIndicator: const Center(child: CircularProgressIndicator()),
+    );
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
@@ -40,11 +74,14 @@ class PaymentScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
+              height: MediaQuery.of(context).size.height * 0.1,
+            ),
+            SizedBox(
                 width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.2,
+                height: MediaQuery.of(context).size.height * 0.15,
                 child: Image.asset("assets/images/smartphone.png")),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.025,
+              height: MediaQuery.of(context).size.height * 0.06,
             ),
             Container(
               width: double.infinity,
@@ -52,186 +89,38 @@ class PaymentScreen extends StatelessWidget {
               color: prussianBlue,
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.025,
+              height: MediaQuery.of(context).size.height * 0.06,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  CartCubit.get(context).getCartModel!.data!.total.toString(),
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "EGP",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: prussianBlue.shade300),
-                )
-              ],
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            SizedBox(
-              height: 70,
-              child: GestureDetector(
-                onTap: () {
-                  PaymentCubit.get(context).getAuthToken().then((value) {
-                    PaymentCubit.get(context).getOrderRegisterationId(
-                        name: AppCubit.get(context).userModel!.data!.name!,
-                        email: AppCubit.get(context).userModel!.data!.email!,
-                        phone: AppCubit.get(context).userModel!.data!.phone!,
-                        price:
-                            CartCubit.get(context).getCartModel!.data!.total!,
-                        context: context);
-
-                    navigateTo(context, CardScreen());
-                  });
-                },
-                child: Card(
-                  color: ivory,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: indigoDye, width: 2),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          "+ Add Card",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Image.asset("assets/images/card.png")),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                      ],
-                    ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Total Amount :",
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                ),
+                  const Spacer(),
+                  Text(
+                    CartCubit.get(context).getCartModel!.data!.total.toString(),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "EGP",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(color: prussianBlue.shade300),
+                  )
+                ],
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              height: 70,
-              child: GestureDetector(
-                onTap: () {},
-                child: Card(
-                  color: ivory,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: indigoDye, width: 2),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          "Cash ",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Image.asset("assets/images/cash.png"),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              height: 70,
-              child: GestureDetector(
-                onTap: () {},
-                child: Card(
-                  color: ivory,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: indigoDye, width: 2),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          "Fawry",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.asset("assets/images/fawry.png")),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.08,
-            ),
-            defaultButton(
-                function: () {},
-                context: context,
-                text: "Confirm Payment",
-                height: MediaQuery.of(context).size.height * 0.08),
+            const Spacer(),
+            googlePlayButton,
+            const Spacer(),
           ],
         ),
       ),
