@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:buybuddy/cubit/app/app_cubit.dart';
 import 'package:buybuddy/modules/home/checkout/confirm_code_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,6 +73,10 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
   //   return Geolocator.distanceBetween(startLat, startLong, endLat, endLong) /
   //       1000;
   // }
+
+  bool phoneConfirmed = false;
+  bool adressConfirmed = false;
+  bool paymentDone = false;
 
   Position? orderLatLong;
 

@@ -7,7 +7,7 @@ import 'package:pay/pay.dart';
 import '../../../shared/styles/colors.dart';
 
 class PaymentScreen extends StatefulWidget {
-  PaymentScreen({super.key});
+  const PaymentScreen({super.key});
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
