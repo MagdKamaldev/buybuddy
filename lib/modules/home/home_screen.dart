@@ -4,6 +4,7 @@ import 'package:buybuddy/cubit/app/app_states.dart';
 import 'package:buybuddy/models/home_model.dart';
 import 'package:buybuddy/modules/home/product_details.dart';
 import 'package:buybuddy/shared/components/components.dart';
+import 'package:buybuddy/shared/components/shimmer/card_list_item.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -27,74 +28,71 @@ class HomeScreen extends StatelessWidget {
           body: Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
               child: ConditionalBuilder(
-                  condition: AppCubit.get(context).homeModel != null,
-                  builder: (context) => SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              "Offers",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            banners(
-                                banners: AppCubit.get(context)
-                                    .homeModel!
-                                    .data!
-                                    .banners,
-                                context: context),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              height: 1,
-                              width: double.infinity,
-                              color: indigoDye,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "What's New ?",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            ListView.separated(
-                              separatorBuilder: (context, index) => SizedBox(
-                                height: 15,
-                              ),
-                              itemCount: AppCubit.get(context)
-                                  .homeModel!
-                                  .data!
-                                  .products
-                                  .length,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) => product(
-                                AppCubit.get(context)
-                                    .homeModel!
-                                    .data!
-                                    .products[index],
-                                context,
-                                index,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                          ],
+                condition: AppCubit.get(context).homeModel != null,
+                builder: (context) => SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        "Offers",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      banners(
+                          banners:
+                              AppCubit.get(context).homeModel!.data!.banners,
+                          context: context),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 1,
+                        width: double.infinity,
+                        color: indigoDye,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "What's New ?",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ListView.separated(
+                        separatorBuilder: (context, index) => SizedBox(
+                          height: 15,
+                        ),
+                        itemCount: AppCubit.get(context)
+                            .homeModel!
+                            .data!
+                            .products
+                            .length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) => product(
+                          AppCubit.get(context)
+                              .homeModel!
+                              .data!
+                              .products[index],
+                          context,
+                          index,
                         ),
                       ),
-                  fallback: (context) => Center(
-                        child: CircularProgressIndicator(),
-                      ))),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  ),
+                ),
+                fallback: (context) => CardListItem(),
+              )),
         );
       },
     );

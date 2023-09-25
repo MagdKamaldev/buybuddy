@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:buybuddy/cubit/app/app_cubit.dart';
-import 'package:buybuddy/modules/home/checkout/confirm_code_screen.dart';
+import 'package:buybuddy/cubit/cart/cart_cubit.dart';
+import 'package:buybuddy/models/get_cart_model.dart';
+import 'package:buybuddy/models/order_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -119,17 +120,20 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
     emit(SetMarkerSuccessState());
   }
 
-  Duration duration = const Duration(seconds: 120);
+  var otpCodeController = TextEditingController();
 
-  //I call this to get the number
   void verifyNumber({
     required String number,
     required BuildContext context,
   }) async {
     emit(VerifyNumberLoadingState());
+
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: number,
       verificationCompleted: (PhoneAuthCredential credential) {
+        //print(credential.token);
+        Navigator.pop(context);
+        showCustomSnackBar(context, "success", Colors.green);
         emit(VerifyNumberSuccessState());
       },
       verificationFailed: (FirebaseAuthException e) {
@@ -140,62 +144,83 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
         );
         emit(VerifyNumberErrorState());
       },
-      codeSent: (String verificationId, int? resendToken) {
-        startTimer();
+      codeSent: (String verificationId, int? forceResendingToken) {
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text("Enter Code"),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: otpCodeController,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.code),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.red)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: indigoDye)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.grey)),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    defaultButton(
+                      context: context,
+                      text: "Confirm",
+                      function: () async {
+                        // print("11111111");
+                        final code = otpCodeController.text.trim();
+                        AuthCredential authCredential =
+                            PhoneAuthProvider.credential(
+                                verificationId: verificationId, smsCode: code);
 
-        navigateTo(
-            context,
-            ConfirmCode(
-                number: number == ""
-                    ? "+20${AppCubit.get(context).userModel!.data!.phone!}"
-                    : number));
-
-        emit(CodeSentState());
+                        if (authCredential.accessToken != null &&
+                            authCredential.accessToken!.isNotEmpty) {
+                          phoneConfirmed = true;
+                          Navigator.pop(context);
+                          emit(VerifyCodeSuccessState());
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              );
+            });
       },
-      timeout: duration,
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
 
-  late Timer timer;
-  Duration remainingDuration = Duration.zero;
+  List<OrderModel> orders = [];
 
-  void startTimer() {
-    remainingDuration = duration;
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      remainingDuration -= const Duration(seconds: 1);
-      if (remainingDuration == const Duration(seconds: 0)) {
-        timer.cancel();
-      }
-      emit(TimerState());
-    });
-  }
-
-  void stopTimer() {
-    timer.cancel();
-  }
-
-  FirebaseAuth auth = FirebaseAuth.instance;
-  UserCredential? userCredential;
-
-//I call this when I confirm the code
-  void confirmPhoneNumber({
-    required String number,
-    required String code,
+  void checkout({
     required BuildContext context,
-  }) async {
-    emit(VerifyCodeLoadingState());
-    ConfirmationResult confirmationResult = await auth.signInWithPhoneNumber(
-      number,
-    );
-    userCredential = await confirmationResult.confirm(code).then((value) {
-      stopTimer();
-      Navigator.pop(context);
-      Navigator.pop(context);
-      emit(VerifyCodeSuccessState());
-    }).catchError((error) {
-      showCustomSnackBar(context, error.message.toString(), Colors.red);
-      emit(VerifyCodeErrorState());
-    });
+  }) {
+    if (phoneConfirmed && adressConfirmed && paymentDone) {
+      for (CartItems item
+          in CartCubit.get(context).getCartModel!.data!.cartItems!) {
+        CartCubit.get(context).addToCart(item.id!, context);
+      }
+      orders.add(OrderModel(
+          CartCubit.get(context).getCartModel!.data!.cartItems!,
+          orderLatLong!.latitude,
+          orderLatLong!.longitude,
+          CartCubit.get(context).getCartModel!.data!.total!,
+          DateTime.now()));
+      showCustomSnackBar(context, "Order Placed", Colors.green);
+      emit(CheckoutSuccessState());
+    } else {
+      showCustomSnackBar(context,
+          "Cannot place Order Without the previous steps !", Colors.red);
+      emit(CheckoutErrorState());
+    }
   }
 }

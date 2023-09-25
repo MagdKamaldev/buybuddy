@@ -116,13 +116,37 @@ class _CartScreenState extends State<CartScreen> {
               ]),
             ),
           ),
-          fallback: (context) => Center(child: CircularProgressIndicator()),
+          fallback: (context) => Padding(
+            padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+            child: ListView.separated(
+              itemBuilder: (context, index) =>
+                  productLoadingItem(context: context),
+              itemCount: 20,
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 16,
+              ),
+            ),
+          ),
           condition: CartCubit.get(context).getCartModel != null &&
               state is GetCartDataSuccessState,
         ),
       ),
     );
   }
+
+  Widget productLoadingItem({
+    required BuildContext context,
+  }) =>
+      Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(13)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.13,
+            color: Colors.grey,
+          ),
+        ),
+      );
 
   Widget product(model, context, index) => Container(
         decoration: BoxDecoration(

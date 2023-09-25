@@ -114,7 +114,9 @@ class CheckoutScreen extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.07,
                 ),
                 defaultButton(
-                    function: () {},
+                    function: () {
+                      cubit.checkout(context: context);
+                    },
                     context: context,
                     text: "Place Order",
                     width: double.infinity,

@@ -72,7 +72,17 @@ class FavouritesScreen extends StatelessWidget {
               ]),
             ),
           ),
-          fallback: (context) => Center(child: CircularProgressIndicator()),
+          fallback: (context) => Padding(
+            padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+            child: ListView.separated(
+              itemBuilder: (context, index) =>
+                  productLoadingItem(context: context),
+              itemCount: 20,
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 16,
+              ),
+            ),
+          ),
           condition: FavoritesCubit.get(context).favoritesModel != null,
         ),
       ),
@@ -181,6 +191,20 @@ class FavouritesScreen extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+        ),
+      );
+
+  Widget productLoadingItem({
+    required BuildContext context,
+  }) =>
+      Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(13)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.13,
+            color: Colors.grey,
           ),
         ),
       );

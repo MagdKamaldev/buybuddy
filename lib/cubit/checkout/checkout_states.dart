@@ -36,4 +36,6 @@ class VerifyCodeSuccessState extends CheckOutStates{}
 
 class VerifyCodeErrorState extends CheckOutStates{}
 
-class TimerState extends CheckOutStates{}
+class CheckoutSuccessState extends CheckOutStates{}
+
+class CheckoutErrorState extends CheckOutStates{}
