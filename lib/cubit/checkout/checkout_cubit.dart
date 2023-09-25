@@ -218,8 +218,6 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
       showCustomSnackBar(context, "Order Placed", Colors.green);
       emit(CheckoutSuccessState());
     } else {
-
-      
       showCustomSnackBar(context,
           "Cannot place Order Without the previous steps !", Colors.red);
       emit(CheckoutErrorState());
