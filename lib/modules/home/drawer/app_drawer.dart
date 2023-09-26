@@ -1,4 +1,4 @@
-import 'package:buybuddy/modules/home/main/settings_screen.dart';
+import 'package:buybuddy/modules/home/drawer/settings_screen.dart';
 import 'package:buybuddy/modules/onboarding/sign_in.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/networks/cache_helper.dart';
