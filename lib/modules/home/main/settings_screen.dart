@@ -65,7 +65,7 @@ class SettingsScreen extends StatelessWidget {
                             label: "Name",
                             prefix: Icons.person),
                         SizedBox(
-                          height: 20,
+                          height: MediaQuery.of(context).size.height * 0.06,
                         ),
                         defaultFormField(
                             context: context,
@@ -80,7 +80,7 @@ class SettingsScreen extends StatelessWidget {
                             label: "Email",
                             prefix: Icons.email),
                         SizedBox(
-                          height: 20,
+                          height: MediaQuery.of(context).size.height * 0.06,
                         ),
                         defaultFormField(
                             context: context,
@@ -94,25 +94,6 @@ class SettingsScreen extends StatelessWidget {
                             },
                             label: "phone",
                             prefix: Icons.phone),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        defaultButton(
-                            context: context,
-                            function: () {
-                              if (formKey.currentState!.validate()) {
-                                AppCubit.get(context).updateUserData(
-                                    name: nameController.text,
-                                    phone: phoneController.text,
-                                    email: emailController.text);
-                              }
-                            },
-                            text: "update",
-                            isUpperCase: true),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        logoutButton(context),
                       ],
                     ),
                   ),
@@ -120,6 +101,23 @@ class SettingsScreen extends StatelessWidget {
               );
             },
             fallback: (context) => Center(child: CircularProgressIndicator()),
+          ),
+          bottomNavigationBar: Container(
+            color: indigoDye,
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.08,
+            child: defaultButton(
+                context: context,
+                function: () {
+                  if (formKey.currentState!.validate()) {
+                    AppCubit.get(context).updateUserData(
+                        name: nameController.text,
+                        phone: phoneController.text,
+                        email: emailController.text);
+                  }
+                },
+                text: "update",
+                isUpperCase: true),
           ),
         );
       },
