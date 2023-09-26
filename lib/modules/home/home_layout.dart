@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 import 'package:buybuddy/cubit/app/app_cubit.dart';
 import 'package:buybuddy/cubit/app/app_states.dart';
+import 'package:buybuddy/modules/home/drawer/app_drawer.dart';
 import 'package:buybuddy/modules/home/search_screen.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
@@ -46,12 +47,13 @@ class HomeLayout extends StatelessWidget {
             ),
             toolbarHeight: 80,
           ),
+          drawer: const AppDrawer(),
           body:
               AppCubit.get(context).screens[AppCubit.get(context).screenindex!],
           bottomNavigationBar: Container(
             color: indigoDye,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
               child: GNav(
                 tabBorderRadius: 20,
                 onTabChange: (index) =>
@@ -61,7 +63,8 @@ class HomeLayout extends StatelessWidget {
                 activeColor: prussianBlue,
                 tabBackgroundColor: ashGrey,
                 selectedIndex: AppCubit.get(context).screenindex!,
-                padding: EdgeInsets.all(16),
+                padding:
+                    EdgeInsets.only(top: 16, bottom: 16, left: 20, right: 20),
                 tabs: [
                   GButton(
                     icon: Icons.home,
@@ -75,12 +78,8 @@ class HomeLayout extends StatelessWidget {
                     icon: Icons.shopping_cart,
                     text: "Cart",
                   ),
-                  GButton(
-                    icon: Icons.person,
-                    text: "Profile",
-                  ),
                 ],
-                gap: 8,
+                gap: 10,
               ),
             ),
           ),

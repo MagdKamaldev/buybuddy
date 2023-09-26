@@ -4,7 +4,6 @@ import 'package:buybuddy/models/home_model.dart';
 import 'package:buybuddy/modules/home/cart_screen.dart';
 import 'package:buybuddy/modules/home/favourites_screen.dart';
 import 'package:buybuddy/modules/home/home_screen.dart';
-import 'package:buybuddy/modules/home/profile_screen.dart';
 import 'package:buybuddy/shared/networks/dio_helper.dart';
 import 'package:buybuddy/shared/networks/end_points.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,7 @@ class AppCubit extends Cubit<AppStates> {
     HomeScreen(),
     FavouritesScreen(),
     CartScreen(),
-    ProfileScreen(),
+  
   ];
 
   void changeScreen(int index) {
@@ -50,11 +49,7 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-
-  
-
   HomeModel? homeModel;
-
 
   void getHomeData() {
     emit(GetHomeDataLoadingState());
@@ -77,16 +72,12 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  
-  
   double currentCarouselPage = 0;
 
   void changeSliderIndex(int index) {
     currentCarouselPage = index.toDouble();
     emit(ChangeSliderIndex());
   }
-
- 
 
   LoginModel? userModel;
 
@@ -120,6 +111,4 @@ class AppCubit extends Cubit<AppStates> {
       emit(UpdateUserDataErrorState());
     });
   }
-
-  
 }
