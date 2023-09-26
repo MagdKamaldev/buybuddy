@@ -131,9 +131,9 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
     FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: number,
         verificationCompleted: (AuthCredential credential) async {
-          await FirebaseAuth.instance.signInWithCredential(credential);
+          // await FirebaseAuth.instance.signInWithCredential(credential);
           showCustomSnackBar(
-              context, "Phone number Successfully confirmed", Colors.green);
+              context, "Phone number successfully confirmed", Colors.green);
           phoneConfirmed = true;
           emit(VerifyCodeSuccessState());
         },
@@ -176,12 +176,31 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
                           final code = otpCodeController.text.trim();
                           AuthCredential authCredential =
                               PhoneAuthProvider.credential(
-                                  verificationId: verificationId,
-                                  smsCode: code);
+                            verificationId: verificationId,
+                            smsCode: code,
+                          );
+
+                          try {
+                            await FirebaseAuth.instance
+                                .signInWithCredential(authCredential);
+                            showCustomSnackBar(
+                                context,
+                                "Phone number successfully confirmed",
+                                Colors.green);
+                            phoneConfirmed = true;
+                            emit(VerifyCodeSuccessState());
+                          } on FirebaseAuthException catch (error) {
+                            showCustomSnackBar(
+                                context,
+                                "Phone verification failed: ${error.message}",
+                                Colors.red);
+                          }
                           Navigator.pop(context);
-                          debugPrint('1111111111111111');
                         },
-                        child: const Text("confirm"),
+                        child: Text(
+                          "confirm",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
                       ),
                     ],
                   ),
