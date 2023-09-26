@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 import 'package:buybuddy/cubit/app/app_cubit.dart';
 import 'package:buybuddy/cubit/app/app_states.dart';
-import 'package:buybuddy/modules/home/drawer/app_drawer.dart';
-import 'package:buybuddy/modules/home/search_screen.dart';
+import 'package:buybuddy/modules/home/main/app_drawer.dart';
+import 'package:buybuddy/modules/home/main/search_screen.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/styles/colors.dart';
 import 'package:flutter/material.dart';

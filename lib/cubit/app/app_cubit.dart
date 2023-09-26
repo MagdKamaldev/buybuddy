@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_function_literals_in_foreach_calls
 import 'package:buybuddy/main.dart';
 import 'package:buybuddy/models/home_model.dart';
-import 'package:buybuddy/modules/home/cart_screen.dart';
-import 'package:buybuddy/modules/home/favourites_screen.dart';
-import 'package:buybuddy/modules/home/home_screen.dart';
+import 'package:buybuddy/modules/home/main/cart_screen.dart';
+import 'package:buybuddy/modules/home/main/favourites_screen.dart';
+import 'package:buybuddy/modules/home/main/home_screen.dart';
 import 'package:buybuddy/shared/networks/dio_helper.dart';
 import 'package:buybuddy/shared/networks/end_points.dart';
 import 'package:flutter/material.dart';

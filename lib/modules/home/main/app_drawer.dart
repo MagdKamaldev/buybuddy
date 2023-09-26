@@ -1,4 +1,4 @@
-import 'package:buybuddy/modules/home/drawer/settings_screen.dart';
+import 'package:buybuddy/modules/home/main/settings_screen.dart';
 import 'package:buybuddy/modules/onboarding/sign_in.dart';
 import 'package:buybuddy/shared/components/components.dart';
 import 'package:buybuddy/shared/networks/cache_helper.dart';
@@ -60,6 +60,41 @@ class AppDrawer extends StatelessWidget {
                   height: size.height * 0.035,
                 ),
                 GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    height: size.height * 0.08,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Card(
+                      elevation: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              "Orders",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(color: prussianBlue, fontSize: 20),
+                            ),
+                            const Spacer(),
+                            const Icon(
+                              Icons.history,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.035,
+                ),
+                GestureDetector(
                   onTap: () {
                     navigateTo(context, SettingsScreen());
                   },
@@ -77,7 +112,7 @@ class AppDrawer extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                              "Settings",
+                              "User Settings",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
