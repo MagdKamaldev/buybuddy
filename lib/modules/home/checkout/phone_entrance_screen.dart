@@ -68,13 +68,12 @@ class PhoneEntrance extends StatelessWidget {
               const Spacer(),
               defaultButton(
                   function: () {
-                    CheckOutCubit.get(context).verifyNumber(
-                      number: phoneNumber == ""
+                    CheckOutCubit.get(context).phoneLogin(
+                      context,
+                      phoneNumber == ""
                           ? "+20${AppCubit.get(context).userModel!.data!.phone!}"
                           : phoneNumber,
-                      context: context,
                     );
-                   
                   },
                   context: context,
                   text: "Confirm Phone",

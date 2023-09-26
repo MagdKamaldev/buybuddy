@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, use_build_context_synchronously
+
 import 'dart:async';
 import 'package:buybuddy/cubit/cart/cart_cubit.dart';
 import 'package:buybuddy/models/get_cart_model.dart';
@@ -122,81 +124,71 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
 
   var otpCodeController = TextEditingController();
 
-  void verifyNumber({
-    required String number,
-    required BuildContext context,
-  }) async {
-    emit(VerifyNumberLoadingState());
-
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: number,
-      verificationCompleted: (PhoneAuthCredential credential) {
-        //print(credential.token);
-        Navigator.pop(context);
-        showCustomSnackBar(context, "success", Colors.green);
-        emit(VerifyNumberSuccessState());
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        showCustomSnackBar(
-          context,
-          e.message.toString(),
-          Colors.red,
-        );
-        emit(VerifyNumberErrorState());
-      },
-      codeSent: (String verificationId, int? forceResendingToken) {
-        showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text("Enter Code"),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextField(
-                      controller: otpCodeController,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.code),
-                        errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.red)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: indigoDye)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.grey)),
+  Future phoneLogin(
+    BuildContext context,
+    String number,
+  ) async {
+    FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: number,
+        verificationCompleted: (AuthCredential credential) async {
+          await FirebaseAuth.instance.signInWithCredential(credential);
+          showCustomSnackBar(
+              context, "Phone number Successfully confirmed", Colors.green);
+          phoneConfirmed = true;
+          emit(VerifyCodeSuccessState());
+        },
+        verificationFailed: (FirebaseAuthException error) {
+          showCustomSnackBar(context, error.toString(), Colors.red);
+        },
+        codeSent: (String verificationId, int? forceResendingToken) {
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("Enter Code"),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        controller: otpCodeController,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.code),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Colors.red)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: indigoDye)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Colors.grey)),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    defaultButton(
-                      context: context,
-                      text: "Confirm",
-                      function: () async {
-                        // print("11111111");
-                        final code = otpCodeController.text.trim();
-                        AuthCredential authCredential =
-                            PhoneAuthProvider.credential(
-                                verificationId: verificationId, smsCode: code);
-
-                        if (authCredential.accessToken != null &&
-                            authCredential.accessToken!.isNotEmpty) {
-                          phoneConfirmed = true;
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: indigoDye,
+                        ),
+                        onPressed: () async {
+                          final code = otpCodeController.text.trim();
+                          AuthCredential authCredential =
+                              PhoneAuthProvider.credential(
+                                  verificationId: verificationId,
+                                  smsCode: code);
                           Navigator.pop(context);
-                          emit(VerifyCodeSuccessState());
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              );
-            });
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
+                          debugPrint('1111111111111111');
+                        },
+                        child: const Text("confirm"),
+                      ),
+                    ],
+                  ),
+                );
+              });
+        },
+        codeAutoRetrievalTimeout: (String verification) {});
   }
 
   List<OrderModel> orders = [];
@@ -217,7 +209,7 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
           DateTime.now()));
       showCustomSnackBar(context, "Order Placed", Colors.green);
       emit(CheckoutSuccessState());
-    } else { 
+    } else {
       showCustomSnackBar(context,
           "Cannot place Order Without the previous steps !", Colors.red);
       emit(CheckoutErrorState());
