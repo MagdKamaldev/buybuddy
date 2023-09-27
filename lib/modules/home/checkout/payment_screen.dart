@@ -138,6 +138,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ],
             ),
           ),
+          bottomNavigationBar: Container(
+              color: indigoDye,
+              height: MediaQuery.of(context).size.height * 0.08,
+              child: MaterialButton(
+                onPressed: () {
+                  cubit.confirmPaymentSucess(context);
+                  Navigator.pop(context);
+                },
+                color: indigoDye,
+                child: Text(
+                  "Cash On delivery",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: ivory),
+                ),
+              )),
         );
       },
     );

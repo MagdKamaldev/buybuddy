@@ -1,14 +1,14 @@
 class GetCartModel {
-  bool ?status;
-  String ?message;
-  Data ?data;
+  bool? status;
+  String? message;
+  Data? data;
 
   GetCartModel({this.status, this.message, this.data});
 
   GetCartModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -21,9 +21,9 @@ class GetCartModel {
 }
 
 class Data {
-  List<CartItems> ?cartItems;
-  int ?subTotal;
-  int ?total;
+  List<CartItems>? cartItems;
+  int? subTotal;
+  int? total;
 
   Data({this.cartItems, this.subTotal, this.total});
 
@@ -34,12 +34,12 @@ class Data {
         cartItems!.add(CartItems.fromJson(v));
       });
     }
-    subTotal = json['sub_total'];
-    total = json['total'];
+    subTotal = json['sub_total'] ?? 0.0;
+    total = json['total'] ?? 0.0;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (cartItems != null) {
       data['cart_items'] = cartItems!.map((v) => v.toJson()).toList();
     }
@@ -50,9 +50,9 @@ class Data {
 }
 
 class CartItems {
-  int ?id;
-  int ?quantity;
-  Product ?product;
+  int? id;
+  int? quantity;
+  Product? product;
 
   CartItems({this.id, this.quantity, this.product});
 
@@ -68,22 +68,22 @@ class CartItems {
     data['id'] = id;
     data['quantity'] = quantity;
     data['product'] = product!.toJson();
-   
+
     return data;
   }
 }
 
 class Product {
-  int ? id;
-  int ?price;
-  int ?oldPrice;
-  int ?discount;
-  String ?image;
-  String ?name;
-  String ?description;
-  List<String> ?images;
-  bool ?inFavorites;
-  bool ?inCart;
+  int? id;
+  int? price;
+  int? oldPrice;
+  int? discount;
+  String? image;
+  String? name;
+  String? description;
+  List<String>? images;
+  bool? inFavorites;
+  bool? inCart;
 
   Product(
       {this.id,

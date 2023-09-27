@@ -1,6 +1,6 @@
 // ignore_for_file: unused_local_variable, use_build_context_synchronously
-
 import 'dart:async';
+import 'dart:convert';
 import 'package:buybuddy/cubit/cart/cart_cubit.dart';
 import 'package:buybuddy/models/get_cart_model.dart';
 import 'package:buybuddy/models/order_model.dart';
@@ -248,13 +248,25 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
           in CartCubit.get(context).getCartModel!.data!.cartItems!) {
         CartCubit.get(context).addToCart(item.id!, context);
       }
-      orders.add(OrderModel(
-          CartCubit.get(context).getCartModel!.data!.cartItems!,
-          orderLatLong!.latitude,
-          orderLatLong!.longitude,
-          CartCubit.get(context).getCartModel!.data!.total!,
-          DateTime.now()));
+      orders.add(
+        OrderModel(
+            CartCubit.get(context).getCartModel!.data!.cartItems!,
+            orderLatLong == null ? 0.0 : orderLatLong!.latitude,
+            orderLatLong == null ? 0.0 : orderLatLong!.longitude,
+            CartCubit.get(context).getCartModel!.data!.total!,
+            currentOrderAdress,
+            DateTime.now()),
+      );
+
+      List<Map<String, dynamic>> ordersJson =
+          orders.map((order) => order.toJson()).toList();
+
+      String ordersJsonString = jsonEncode(ordersJson);
+
+      CacheHelper.saveData(key: 'orders', value: ordersJsonString);
+
       showCustomSnackBar(context, "Order Placed", Colors.green);
+      debugPrint(CacheHelper.getData(key: "orders"));
       emit(CheckoutSuccessState());
     } else {
       showCustomSnackBar(context,

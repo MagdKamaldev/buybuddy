@@ -6,4 +6,4 @@ const profile = "profile";
 const updateProfile = "update-profile";
 const searchUrl = "products/search";
 const carts = "carts";
-
+const reomveCart = "carts/2";
