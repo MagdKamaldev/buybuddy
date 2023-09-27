@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CardListItem extends StatelessWidget {
   const CardListItem({
@@ -7,44 +8,48 @@ class CardListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 18, right: 18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 300,
-            height: 24,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-          const SizedBox(height: 16),
-          buildImage(),
-          const SizedBox(height: 16),
-          _buildText(),
-          const SizedBox(height: 16),
-          Container(
-            width: 300,
-            height: 24,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: ListView.separated(
-              itemBuilder: (context, index) =>
-                  productLoadingItem(context: context),
-              itemCount: 20,
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 16,
+    return Shimmer.fromColors(
+      highlightColor: Colors.grey[400]!,
+      baseColor: Colors.grey,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20, left: 18, right: 18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 300,
+              height: 24,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(16),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            buildImage(),
+            const SizedBox(height: 16),
+            _buildText(),
+            const SizedBox(height: 16),
+            Container(
+              width: 300,
+              height: 24,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView.separated(
+                itemBuilder: (context, index) =>
+                    productLoadingItem(context: context),
+                itemCount: 20,
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

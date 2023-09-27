@@ -84,7 +84,7 @@ class AppDrawer extends StatelessWidget {
                             const Spacer(),
                             const Icon(
                               Icons.history,
-                            )
+                            ),
                           ],
                         ),
                       ),

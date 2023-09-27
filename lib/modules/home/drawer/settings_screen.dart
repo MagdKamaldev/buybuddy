@@ -18,6 +18,9 @@ class SettingsScreen extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        nameController.text = AppCubit.get(context).userModel!.data!.name!;
+        emailController.text = AppCubit.get(context).userModel!.data!.email!;
+        phoneController.text = AppCubit.get(context).userModel!.data!.phone!;
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: 80,
@@ -31,12 +34,6 @@ class SettingsScreen extends StatelessWidget {
           body: ConditionalBuilder(
             condition: AppCubit.get(context).userModel != null,
             builder: (context) {
-              nameController.text =
-                  AppCubit.get(context).userModel!.data!.name!;
-              emailController.text =
-                  AppCubit.get(context).userModel!.data!.email!;
-              phoneController.text =
-                  AppCubit.get(context).userModel!.data!.phone!;
               return SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.all(20),

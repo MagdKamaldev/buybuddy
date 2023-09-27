@@ -6,6 +6,7 @@ import 'package:buybuddy/shared/components/components.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../shared/styles/colors.dart';
 
 class FavouritesScreen extends StatelessWidget {
@@ -198,13 +199,17 @@ class FavouritesScreen extends StatelessWidget {
   Widget productLoadingItem({
     required BuildContext context,
   }) =>
-      Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(13)),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.13,
-            color: Colors.grey,
+      Shimmer.fromColors(
+        highlightColor: Colors.grey[400]!,
+        baseColor: Colors.grey,
+        child: Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(13)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.13,
+              color: Colors.grey,
+            ),
           ),
         ),
       );

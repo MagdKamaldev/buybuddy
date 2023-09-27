@@ -12,11 +12,17 @@ import '../../../cubit/checkout/checkout_states.dart';
 
 class SetLocationScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
+
   var buildingController = TextEditingController();
+
   var apartmentController = TextEditingController();
+
   var floorController = TextEditingController();
+
   var streetController = TextEditingController();
+
   var additionalDirectionsController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var cubit = CheckOutCubit.get(context);
@@ -284,7 +290,17 @@ class SetLocationScreen extends StatelessWidget {
                   defaultButton(
                       function: () {
                         if (formKey.currentState!.validate() &&
-                            CheckOutCubit.get(context).orderLatLong != null) {}
+                            CheckOutCubit.get(context).orderLatLong != null) {
+                          cubit.confirmLocation(
+                              streetController: streetController,
+                              buildingController: buildingController,
+                              floorController: floorController,
+                              apartmentController: apartmentController,
+                              context: context);
+                        } else {
+                          showCustomSnackBar(context,
+                              "Please confirm Adress details", Colors.red);
+                        }
                       },
                       context: context,
                       text: "Confirm"),

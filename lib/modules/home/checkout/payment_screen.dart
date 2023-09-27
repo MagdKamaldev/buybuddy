@@ -34,10 +34,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = CheckOutCubit.get(context);
     var googlePlayButton = GooglePayButton(
       onPaymentResult: (result) {
         showCustomSnackBar(context, "Payment Successful", Colors.green);
-        CheckOutCubit.get(context).paymentDone = true;
+        cubit.confirmPaymentSucess(context);
       },
       paymentItems: items,
       type: GooglePayButtonType.buy,

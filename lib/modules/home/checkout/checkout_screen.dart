@@ -34,7 +34,9 @@ class CheckoutScreen extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    navigateTo(context, PhoneEntrance());
+                    if (!cubit.phoneConfirmed) {
+                      navigateTo(context, PhoneEntrance());
+                    }
                   },
                   child: MyTimeLineTile(
                     isFirst: true,

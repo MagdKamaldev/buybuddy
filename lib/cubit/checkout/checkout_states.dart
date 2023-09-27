@@ -39,3 +39,7 @@ class VerifyCodeErrorState extends CheckOutStates{}
 class CheckoutSuccessState extends CheckOutStates{}
 
 class CheckoutErrorState extends CheckOutStates{}
+
+class ConfirmLocationSuccessState extends CheckOutStates{}
+
+class ConfirmPaymentSuccessState extends CheckOutStates{}

@@ -153,7 +153,6 @@ void showDoneGetBack(BuildContext context, Size size) {
                 function: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
-                  Navigator.pop(context);
                 },
                 text: "Done",
                 context: context)

@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:buybuddy/cubit/cart/cart_cubit.dart';
 import 'package:buybuddy/models/get_cart_model.dart';
 import 'package:buybuddy/models/order_model.dart';
+import 'package:buybuddy/shared/networks/cache_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,11 +78,32 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
   //       1000;
   // }
 
-  bool phoneConfirmed = false;
+  bool phoneConfirmed = CacheHelper.getData(key: "phoneConfirmed") ?? false;
   bool adressConfirmed = false;
   bool paymentDone = false;
+  String currentOrderAdress = "";
 
   Position? orderLatLong;
+
+  void confirmPaymentSucess(context) {
+    CheckOutCubit.get(context).paymentDone = true;
+    emit(ConfirmPaymentSuccessState());
+  }
+
+  void confirmLocation({
+    required var streetController,
+    required var buildingController,
+    required var floorController,
+    required var apartmentController,
+    required BuildContext context,
+  }) {
+    adressConfirmed = true;
+    currentOrderAdress =
+        "${streetController.text} ${buildingController.text} ${floorController.text} ${apartmentController.text}";
+
+    Navigator.pop(context);
+    emit(ConfirmLocationSuccessState());
+  }
 
   void setOrederLocation(double latitude, double longitude) {
     orderLatLong = Position(
@@ -183,11 +205,14 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
                           try {
                             await FirebaseAuth.instance
                                 .signInWithCredential(authCredential);
+                            Navigator.pop(context);
                             showCustomSnackBar(
                                 context,
                                 "Phone number successfully confirmed",
                                 Colors.green);
                             phoneConfirmed = true;
+                            CacheHelper.saveData(
+                                key: "phoneConfirmed", value: true);
                             emit(VerifyCodeSuccessState());
                           } on FirebaseAuthException catch (error) {
                             showCustomSnackBar(
@@ -199,7 +224,10 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
                         },
                         child: Text(
                           "confirm",
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(color: ivory),
                         ),
                       ),
                     ],

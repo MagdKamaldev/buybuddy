@@ -59,6 +59,7 @@ dependencies:
   firebase_auth: ^4.8.0
   intl: ^0.18.1
   pay: ^1.1.2
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
