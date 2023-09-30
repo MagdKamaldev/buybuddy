@@ -118,6 +118,7 @@ class CheckoutScreen extends StatelessWidget {
                 defaultButton(
                     function: () {
                       cubit.checkout(context: context);
+                      
                     },
                     context: context,
                     text: "Place Order",

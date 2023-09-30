@@ -2,9 +2,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:buybuddy/cubit/cart/cart_cubit.dart';
+import 'package:buybuddy/main.dart';
 import 'package:buybuddy/models/get_cart_model.dart';
 import 'package:buybuddy/models/order_model.dart';
 import 'package:buybuddy/shared/networks/cache_helper.dart';
+import 'package:buybuddy/shared/networks/dio_helper.dart';
+import 'package:buybuddy/shared/networks/end_points.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +21,7 @@ import 'checkout_states.dart';
 class CheckOutCubit extends Cubit<CheckOutStates> {
   CheckOutCubit() : super(CheckOutInitialState()) {
     requestPermission();
+    
   }
 
   static CheckOutCubit get(context) => BlocProvider.of(context);
@@ -240,14 +244,38 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
 
   List<OrderModel> orders = [];
 
+  void fetchOrdersFromCache() {
+    String? ordersJsonString = CacheHelper.getData(key: "orders");
+
+    if (ordersJsonString != null && ordersJsonString.isNotEmpty) {
+      // Parse the JSON string into a List<Map<String, dynamic>>
+      List<dynamic> ordersJson = jsonDecode(ordersJsonString);
+
+      // Map each JSON map to an OrderModel and populate the orders list
+      orders = ordersJson
+          .map((orderJson) => OrderModel.fromJson(orderJson))
+          .toList();
+    }
+  }
+
   void checkout({
     required BuildContext context,
   }) {
     if (phoneConfirmed && adressConfirmed && paymentDone) {
       for (CartItems item
           in CartCubit.get(context).getCartModel!.data!.cartItems!) {
-        CartCubit.get(context).addToCart(item.id!, context);
+        DioHelper.postData(
+          url: carts,
+          data: {
+            "product_id": item.product!.id,
+          },
+          authorization: token,
+          token: token,
+        ).then((value) {
+          emit(CheckoutSuccessState());
+        }).catchError((error) {});
       }
+
       orders.add(
         OrderModel(
             CartCubit.get(context).getCartModel!.data!.cartItems!,
@@ -266,7 +294,11 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
       CacheHelper.saveData(key: 'orders', value: ordersJsonString);
 
       showCustomSnackBar(context, "Order Placed", Colors.green);
-      debugPrint(CacheHelper.getData(key: "orders"));
+
+      Navigator.pop(context);
+
+      CartCubit.get(context).getCartData();
+
       emit(CheckoutSuccessState());
     } else {
       showCustomSnackBar(context,

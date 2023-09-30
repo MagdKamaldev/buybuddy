@@ -1,3 +1,5 @@
+import 'package:buybuddy/cubit/checkout/checkout_cubit.dart';
+import 'package:buybuddy/modules/home/drawer/last_orders_screen.dart';
 import 'package:buybuddy/modules/home/drawer/settings_screen.dart';
 import 'package:buybuddy/modules/onboarding/sign_in.dart';
 import 'package:buybuddy/shared/components/components.dart';
@@ -60,7 +62,10 @@ class AppDrawer extends StatelessWidget {
                   height: size.height * 0.035,
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    navigateTo(context, const Orders());
+                    CheckOutCubit.get(context).fetchOrdersFromCache();
+                  },
                   child: Container(
                     height: size.height * 0.08,
                     width: double.infinity,

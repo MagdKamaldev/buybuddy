@@ -56,6 +56,7 @@ class CartCubit extends Cubit<CartStates> with StateStreamable<CartStates> {
       getCartModel = GetCartModel.fromJson(value.data);
       emit(GetCartDataSuccessState());
     }).catchError((error) {
+      print("111111111111111111111111111 ${error.toString()}");
       emit(GetCartDataErrorState());
     });
   }
