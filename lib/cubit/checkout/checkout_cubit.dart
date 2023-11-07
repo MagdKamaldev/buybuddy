@@ -248,10 +248,9 @@ class CheckOutCubit extends Cubit<CheckOutStates> {
     String? ordersJsonString = CacheHelper.getData(key: "orders");
 
     if (ordersJsonString != null && ordersJsonString.isNotEmpty) {
-      // Parse the JSON string into a List<Map<String, dynamic>>
+    
       List<dynamic> ordersJson = jsonDecode(ordersJsonString);
-
-      // Map each JSON map to an OrderModel and populate the orders list
+      
       orders = ordersJson
           .map((orderJson) => OrderModel.fromJson(orderJson))
           .toList();
